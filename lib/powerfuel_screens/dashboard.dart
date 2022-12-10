@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../station_screens/OrderStatus.dart';
+import 'FuelStations.dart';
 import 'OrderDelivery.dart';
 
 
@@ -63,7 +64,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
                         Icons.bar_chart,
                         color: Colors.white,
                       ),
-                      label: Text("Fuel Stations"),
+                      label: Text("Order Delivery"),
                     ),
                     NavigationRailDestination(
                       icon: Icon(
@@ -74,7 +75,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
                         Icons.person,
                         color: Colors.white,
                       ),
-                      label: Text("Profile"),
+                      label: Text("Fuel Station"),
                     ),
                     NavigationRailDestination(
                       icon: Icon(
@@ -450,7 +451,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
               ),
             ),
           )
-              : _selectedIndex == 1 ? OrderDelivery(): SizedBox.shrink(),
+              : _selectedIndex == 1 ? OrderDelivery(): _selectedIndex == 2 ? FuelStations() : SizedBox.shrink(),
         ],
       ),
       //let's add the floating action button
