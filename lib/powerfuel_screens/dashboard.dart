@@ -77,7 +77,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
                         Icons.local_gas_station,
                         color: Colors.white,
                       ),
-                      label: Text("Fuel Station"),
+                      label: Text("Fuel Stations"),
                     ),
                     NavigationRailDestination(
                       icon: Icon(

@@ -129,6 +129,7 @@ class _FuelStationRequestState extends State<FuelStationRequest> {
                         DataColumn(label: Text("Fuel Type")),
                         DataColumn(label: Text("Request Date")),
                         DataColumn(label: Text("Total Cost")),
+                        DataColumn(label: Text("Status")),
                       ],
                       rows: [
                         DataRow(cells: [
@@ -137,6 +138,15 @@ class _FuelStationRequestState extends State<FuelStationRequest> {
                           DataCell(Text("Petrol")),
                           DataCell(Text("10th july 2022")),
                           DataCell(Text("LKR 500000/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.red)),
+                              onPressed: () {},
+                              child: Text(
+                                "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text("Kandy")),
@@ -144,6 +154,15 @@ class _FuelStationRequestState extends State<FuelStationRequest> {
                           DataCell(Text("Petrol")),
                           DataCell(Text("11th Auguest 2022")),
                           DataCell(Text("LKR 100,000/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.green)),
+                              onPressed: () {},
+                              child: Text(
+                                "Accepted",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text("Polanaruwa")),
@@ -151,6 +170,15 @@ class _FuelStationRequestState extends State<FuelStationRequest> {
                           DataCell(Text("Petrol")),
                           DataCell(Text("10th September 2022")),
                           DataCell(Text("LKR 15000/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.red)),
+                              onPressed: () {},
+                              child: Text(
+                                "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text("Anuradhapura")),
@@ -158,6 +186,15 @@ class _FuelStationRequestState extends State<FuelStationRequest> {
                           DataCell(Text("Petrol")),
                           DataCell(Text("19th September 2022")),
                           DataCell(Text("LKR 10000/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.green)),
+                              onPressed: () {},
+                              child: Text(
+                                "Accepted",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                       ]),
                   //Now let's set the pagination

@@ -129,6 +129,7 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                         DataColumn(label: Text("Type of Fuel")),
                         DataColumn(label: Text("Address of Fuel Station")),
                         DataColumn(label: Text("Fuel Price")),
+                        DataColumn(label: Text("Status")),
                       ],
                       rows: [
                         DataRow(cells: [
@@ -137,6 +138,11 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                           DataCell(Text("Petrol")),
                           DataCell(Text("Colombo , 10")),
                           DataCell(Text("LKR 100/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+                              onPressed: () {
+                              },
+                              child: Text("Completed", style: TextStyle(color: Colors.white),))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text("2")),
@@ -144,6 +150,15 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                           DataCell(Text("Petrol")),
                           DataCell(Text("Kandy , 10")),
                           DataCell(Text("LKR 100/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.red)),
+                              onPressed: () {},
+                              child: Text(
+                                "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text("3")),
@@ -151,6 +166,11 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                           DataCell(Text("Petrol")),
                           DataCell(Text("Polanaruwa , 10")),
                           DataCell(Text("LKR 100/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+                              onPressed: () {
+                              },
+                              child: Text("Completed", style: TextStyle(color: Colors.white),))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text("4")),
@@ -158,6 +178,15 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                           DataCell(Text("Petrol")),
                           DataCell(Text("Anuradhapura , 10")),
                           DataCell(Text("LKR 100/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.red)),
+                              onPressed: () {},
+                              child: Text(
+                                "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                       ]),
                   //Now let's set the pagination

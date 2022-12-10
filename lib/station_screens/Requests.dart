@@ -134,7 +134,7 @@ class _RequestsState extends State<Requests> {
                       ],
                       rows: [
                         DataRow(cells: [
-                          DataCell(Text("1")),
+                          DataCell(Text("1564")),
                           DataCell(Text("ABC1234")),
                           DataCell(Text("Nawab")),
                           DataCell(Text("Petrol")),
@@ -165,7 +165,15 @@ class _RequestsState extends State<Requests> {
                               child: Text("Accepted", style: TextStyle(color: Colors.white),))),
                         ]),
                         DataRow(cells: [
-                          DataCell(Text("2")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.red)),
+                              onPressed: () {},
+                              child: Text(
+                                "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                           DataCell(Text("ABC1234")),
                           DataCell(Text("Priya")),
                           DataCell(Text("Petrol")),
@@ -182,7 +190,15 @@ class _RequestsState extends State<Requests> {
                               ))),
                         ]),
                         DataRow(cells: [
-                          DataCell(Text("3")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.red)),
+                              onPressed: () {},
+                              child: Text(
+                                "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                           DataCell(Text("ABC1234")),
                           DataCell(Text("Aadhil")),
                           DataCell(Text("Petrol")),
@@ -199,7 +215,7 @@ class _RequestsState extends State<Requests> {
                               ))),
                         ]),
                         DataRow(cells: [
-                          DataCell(Text("4")),
+                          DataCell(Text("4246")),
                           DataCell(Text("ABC1234")),
                           DataCell(Text("User")),
                           DataCell(Text("Petrol")),
