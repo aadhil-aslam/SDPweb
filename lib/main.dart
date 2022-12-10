@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:web/station_screens/dashboard.dart';
 
 import 'Home.dart';
+import 'Login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +25,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyHomePage(),
+    return MaterialApp(
+      home: LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }
