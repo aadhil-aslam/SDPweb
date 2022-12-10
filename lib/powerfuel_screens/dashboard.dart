@@ -451,7 +451,9 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
               ),
             ),
           )
-              : _selectedIndex == 1 ? OrderDelivery(): _selectedIndex == 2 ? FuelStations() : SizedBox.shrink(),
+              : _selectedIndex == 1 ? OrderDelivery()
+              : _selectedIndex == 2 ? FuelStations()
+              : SizedBox.shrink(),
         ],
       ),
       //let's add the floating action button

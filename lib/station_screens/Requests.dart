@@ -14,7 +14,7 @@ class _RequestsState extends State<Requests> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 60.0),
+        padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -45,7 +45,7 @@ class _RequestsState extends State<Requests> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Customer requests",
+                    "Customer Requests",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 28.0,
@@ -124,40 +124,92 @@ class _RequestsState extends State<Requests> {
                       MaterialStateProperty.resolveWith(
                               (states) => Colors.grey.shade200),
                       columns: const [
-                        DataColumn(label: Text("Order Number")),
-                        DataColumn(label: Text("Order date")),
-                        DataColumn(label: Text("Type of Fuel")),
+                        DataColumn(label: Text("Token Number")),
+                        DataColumn(label: Text("Vehicle Number")),
+                        DataColumn(label: Text("Customer Name")),
+                        DataColumn(label: Text("Fuel Type")),
                         DataColumn(label: Text("Quantity")),
-                        DataColumn(label: Text("Total amount")),
+                        DataColumn(label: Text("Total cost")),
+                        DataColumn(label: Text("Status")),
                       ],
                       rows: [
                         DataRow(cells: [
+                          DataCell(Text("1")),
                           DataCell(Text("1")),
                           DataCell(Text("Colombo")),
                           DataCell(Text("Petrol")),
                           DataCell(Text("Colombo , 10")),
                           DataCell(Text("LKR 100/=")),
+                          DataCell
+                            // (DropdownButton(
+                            //   hint: Text("Filter by"),
+                            //   items: [
+                            //     DropdownMenuItem(
+                            //       value: "Date",
+                            //       child: Text("Date"),
+                            //     ),
+                            //     DropdownMenuItem(
+                            //       value: "Reviews",
+                            //       child: Text("Reviews"),
+                            //     ),
+                            //     DropdownMenuItem(
+                            //       value: "Branches",
+                            //       child: Text("Branches"),
+                            //     ),
+                            //   ],
+                            //   onChanged: (value) {}))
+                            (TextButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+                              onPressed: () {
+                              },
+                              child: Text("Accepted", style: TextStyle(color: Colors.white),))),
                         ]),
                         DataRow(cells: [
+                          DataCell(Text("2")),
                           DataCell(Text("2")),
                           DataCell(Text("Kandy")),
                           DataCell(Text("Petrol")),
                           DataCell(Text("Kandy , 10")),
                           DataCell(Text("LKR 100/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.red)),
+                              onPressed: () {},
+                              child: Text(
+                                "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                         DataRow(cells: [
+                          DataCell(Text("3")),
                           DataCell(Text("3")),
                           DataCell(Text("Polanaruwa")),
                           DataCell(Text("Petrol")),
                           DataCell(Text("Polanaruwa , 10")),
                           DataCell(Text("LKR 100/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.red)),
+                              onPressed: () {},
+                              child: Text(
+                                "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                         DataRow(cells: [
+                          DataCell(Text("4")),
                           DataCell(Text("4")),
                           DataCell(Text("Anuradhapuram")),
                           DataCell(Text("Petrol")),
                           DataCell(Text("Anuradhapura , 10")),
                           DataCell(Text("LKR 100/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+                              onPressed: () {
+                              },
+                              child: Text("Accepted", style: TextStyle(color: Colors.white),))),
                         ]),
                       ]),
                   //Now let's set the pagination

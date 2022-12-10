@@ -21,7 +21,6 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           TextButton(
               onPressed: () {
-
                 Navigator.push(context, PageTransition(type: PageTransitionType.fade, child: PFDashboardScreen()));
 
                 // Navigator.push(
