@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'OrderStatus.dart';
+import 'Requests.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -62,6 +63,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         color: Colors.white,
                       ),
                       label: Text("Order Status"),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(
+                        Icons.person_pin,
+                        color: Colors.white54,
+                      ),
+                      selectedIcon: Icon(
+                        Icons.person_pin,
+                        color: Colors.white,
+                      ),
+                      label: Text("Customer requests"),
                     ),
                     NavigationRailDestination(
                       icon: Icon(
@@ -448,7 +460,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           )
-              : _selectedIndex == 1 ? OrderStatus(): SizedBox.shrink(),
+              : _selectedIndex == 1 ? OrderStatus(): _selectedIndex == 2 ? Requests(): SizedBox.shrink(),
         ],
       ),
       //let's add the floating action button

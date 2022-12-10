@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
-class OrderStatus extends StatefulWidget {
-  const OrderStatus({Key? key}) : super(key: key);
+class Requests extends StatefulWidget {
+  const Requests({Key? key}) : super(key: key);
 
   @override
-  State<OrderStatus> createState() => _OrderStatusState();
+  State<Requests> createState() => _RequestsState();
 }
 
-class _OrderStatusState extends State<OrderStatus> {
+class _RequestsState extends State<Requests> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -45,7 +45,7 @@ class _OrderStatusState extends State<OrderStatus> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Order Status",
+                    "Customer requests",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 28.0,
