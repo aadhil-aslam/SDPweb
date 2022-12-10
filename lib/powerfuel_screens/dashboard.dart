@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../station_screens/OrderStatus.dart';
 import 'FuelStations.dart';
 import 'OrderDelivery.dart';
+import 'StationRequest.dart';
 
 
 class PFDashboardScreen extends StatefulWidget {
@@ -14,12 +15,13 @@ class PFDashboardScreen extends StatefulWidget {
 
 class _PFDashboardScreenState extends State<PFDashboardScreen> {
   //setting the expansion function for the navigation rail
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //Let's start by adding the Navigation Rail
           Column(
@@ -68,25 +70,25 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
                     ),
                     NavigationRailDestination(
                       icon: Icon(
-                        Icons.person,
+                        Icons.local_gas_station,
                         color: Colors.white54,
                       ),
                       selectedIcon: Icon(
-                        Icons.person,
+                        Icons.local_gas_station,
                         color: Colors.white,
                       ),
                       label: Text("Fuel Station"),
                     ),
                     NavigationRailDestination(
                       icon: Icon(
-                        Icons.settings,
+                        Icons.shopping_bag,
                         color: Colors.white54,
                       ),
                       selectedIcon: Icon(
-                        Icons.settings,
+                        Icons.shopping_bag,
                         color: Colors.white,
                       ),
-                      label: Text("Order of Fuel"),
+                      label: Text("Requests"),
                     ),
                   ],
                 ),
@@ -112,7 +114,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
               ?
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 60.0),
+              padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -252,200 +254,6 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
                     SizedBox(
                       height: 30.0,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              "6 Articles",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 28.0,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(
-                              "3 new Articles",
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          width: 300.0,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: "Type Fuel Station",
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.black26,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-
-                    //let's set the filter section
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton.icon(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: Colors.deepPurple.shade400,
-                          ),
-                          label: Text(
-                            "2022, July 14, July 15, July 16",
-                            style: TextStyle(
-                              color: Colors.deepPurple.shade400,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            DropdownButton(
-                                hint: Text("Filter by"),
-                                items: [
-                                  DropdownMenuItem(
-                                    value: "Date",
-                                    child: Text("Date"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Reviews",
-                                    child: Text("Reviews"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Branches",
-                                    child: Text("Branches"),
-                                  ),
-                                ],
-                                onChanged: (value) {}),
-                            SizedBox(
-                              width: 20.0,
-                            ),
-                            DropdownButton(
-                                hint: Text("Order by"),
-                                items: [
-                                  DropdownMenuItem(
-                                    value: "Date",
-                                    child: Text("Date"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Reviews",
-                                    child: Text("Reviews"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Branches",
-                                    child: Text("Branches"),
-                                  ),
-                                ],
-                                onChanged: (value) {}),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-                    //Now let's add the Table
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        DataTable(
-                            headingRowColor:
-                            MaterialStateProperty.resolveWith(
-                                    (states) => Colors.grey.shade200),
-                            columns: [
-                              DataColumn(label: Text("ID")),
-                              DataColumn(label: Text("City of Fual Station")),
-                              DataColumn(label: Text("Type of Fuel")),
-                              DataColumn(label: Text("Address of Fuel Station")),
-                              DataColumn(label: Text("Fuel Price")),
-                            ],
-                            rows: [
-                              DataRow(cells: [
-                                DataCell(Text("1")),
-                                DataCell(Text("Colombo")),
-                                DataCell(Text("Petrol")),
-                                DataCell(Text("Colombo , 10")),
-                                DataCell(Text("LKR 100/=")),
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text("2")),
-                                DataCell(Text("Kandy")),
-                                DataCell(Text("Petrol")),
-                                DataCell(Text("Kandy , 10")),
-                                DataCell(Text("LKR 100/=")),
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text("3")),
-                                DataCell(Text("Polanaruwa")),
-                                DataCell(Text("Petrol")),
-                                DataCell(Text("Polanaruwa , 10")),
-                                DataCell(Text("LKR 100/=")),
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text("4")),
-                                DataCell(Text("Anuradhapuram")),
-                                DataCell(Text("Petrol")),
-                                DataCell(Text("Anuradhapura , 10")),
-                                DataCell(Text("LKR 100/=")),
-                              ]),
-                            ]),
-                        //Now let's set the pagination
-                        SizedBox(
-                          height: 40.0,
-                        ),
-                        Row(
-                          children: [
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "1",
-                                style:
-                                TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "2",
-                                style:
-                                TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "3",
-                                style:
-                                TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "See All",
-                                style:
-                                TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )
                   ],
                 ),
               ),
@@ -453,6 +261,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
           )
               : _selectedIndex == 1 ? OrderDelivery()
               : _selectedIndex == 2 ? FuelStations()
+              : _selectedIndex == 3 ? FuelStationRequest()
               : SizedBox.shrink(),
         ],
       ),

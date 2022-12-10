@@ -14,7 +14,7 @@ class _OrderDeliveryState extends State<OrderDelivery> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 60.0),
+        padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

@@ -67,11 +67,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     NavigationRailDestination(
                       icon: Icon(
-                        Icons.person_pin,
+                        Icons.shopping_bag,
                         color: Colors.white54,
                       ),
                       selectedIcon: Icon(
-                        Icons.person_pin,
+                        Icons.shopping_bag,
                         color: Colors.white,
                       ),
                       label: Text("Customer requests"),
@@ -87,17 +87,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       label: Text("Profile"),
                     ),
-                    NavigationRailDestination(
-                      icon: Icon(
-                        Icons.settings,
-                        color: Colors.white54,
-                      ),
-                      selectedIcon: Icon(
-                        Icons.settings,
-                        color: Colors.white,
-                      ),
-                      label: Text("Order of Fuel"),
-                    ),
+                    // NavigationRailDestination(
+                    //   icon: Icon(
+                    //     Icons.settings,
+                    //     color: Colors.white54,
+                    //   ),
+                    //   selectedIcon: Icon(
+                    //     Icons.settings,
+                    //     color: Colors.white,
+                    //   ),
+                    //   label: Text("Order of Fuel"),
+                    // ),
                   ],
                 ),
               ),
@@ -151,224 +151,110 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Column(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Flexible(
-                                child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(18.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Row(children: [Icon(Icons.article, size: 26.0,
-                                        ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "Total Fuel station",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],),
-                                          SizedBox(height: 20.0,),
-                                          Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                        ],
+                        Flexible(
+                            child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [Row(children: [Icon(Icons.article, size: 26.0,
+                                    ),
+                                      SizedBox(
+                                        width: 15.0,
                                       ),
-                                    ))
-                            ),
-                            Flexible(
-                                child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(18.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Row(children: [Icon(Icons.article, size: 26.0,
+                                      Text(
+                                        "Total requests",
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "New Fuel Order",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],),
-                                          SizedBox(height: 20.0,),
-                                          Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                        ],
-                                      ),
-                                    ))
-                            ),
-
-                            Flexible(
-                                child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(18.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Row(children: [Icon(Icons.article, size: 26.0,
-                                        ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "Confirmed Order",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],),
-                                          SizedBox(height: 20.0,),
-                                          Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                        ],
-                                      ),
-                                    ))
-                            ),
-
-                            Flexible(
-                                child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(18.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Row(children: [Icon(Icons.article, size: 26.0,
-                                        ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "Cancelled Order",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],),
-                                          SizedBox(height: 20.0,),
-                                          Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                        ],
-                                      ),
-                                    ))
-                            ),
-                          ],
+                                      )
+                                    ],),
+                                      SizedBox(height: 20.0,),
+                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                                    ],
+                                  ),
+                                ))
                         ),
-                        SizedBox(
-                          height: 30.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Flexible(
-                                child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(18.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Row(children: [Icon(Icons.article, size: 26.0,
-                                        ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "Total Fuel station",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],),
-                                          SizedBox(height: 20.0,),
-                                          Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                        ],
+                        Flexible(
+                            child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [Row(children: [Icon(Icons.article, size: 26.0,
+                                    ),
+                                      SizedBox(
+                                        width: 15.0,
                                       ),
-                                    ))
-                            ),
+                                      Text(
+                                        "New Fuel Order",
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    ],),
+                                      SizedBox(height: 20.0,),
+                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                                    ],
+                                  ),
+                                ))
+                        ),
 
-                            Flexible(
-                                child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(18.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Row(children: [Icon(Icons.article, size: 26.0,
-                                        ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "New Fuel Order",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],),
-                                          SizedBox(height: 20.0,),
-                                          Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                        ],
+                        Flexible(
+                            child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [Row(children: [Icon(Icons.article, size: 26.0,
+                                    ),
+                                      SizedBox(
+                                        width: 15.0,
                                       ),
-                                    ))
-                            ),
+                                      Text(
+                                        "Confirmed Order",
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    ],),
+                                      SizedBox(height: 20.0,),
+                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                                    ],
+                                  ),
+                                ))
+                        ),
 
-                            Flexible(
-                                child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(18.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Row(children: [Icon(Icons.article, size: 26.0,
-                                        ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "Confirmed Order",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],),
-                                          SizedBox(height: 20.0,),
-                                          Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                        ],
+                        Flexible(
+                            child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [Row(children: [Icon(Icons.article, size: 26.0,
+                                    ),
+                                      SizedBox(
+                                        width: 15.0,
                                       ),
-                                    ))
-                            ),
-
-                            Flexible(
-                                child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(18.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [Row(children: [Icon(Icons.article, size: 26.0,
+                                      Text(
+                                        "Cancelled Order",
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "Cancelled Order",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],),
-                                          SizedBox(height: 20.0,),
-                                          Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                        ],
-                                      ),
-                                    ))
-                            ),
-                          ],
+                                      )
+                                    ],),
+                                      SizedBox(height: 20.0,),
+                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                                    ],
+                                  ),
+                                ))
                         ),
                       ],
                     ),
