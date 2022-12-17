@@ -46,6 +46,24 @@ class _RequestActionState extends State<RequestAction> {
                               TextButton(
                                   style: ButtonStyle(
                                       backgroundColor:
+                                      MaterialStateProperty.all(Colors.grey)),
+                                  onPressed: () {
+                                    print(snapshot.data!.docs[index].get('id'));
+                                    FirebaseFirestore.instance
+                                        .collection('Requests')
+                                        .doc((snapshot.data!.docs[index].get('id')))
+                                        .update({'Status': 'Pending'});
+                                  },
+                                  child: Text(
+                                    "Pending",
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              TextButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
                                           MaterialStateProperty.all(Colors.green)),
                                   onPressed: () {
                                     print(snapshot.data!.docs[index].get('id'));

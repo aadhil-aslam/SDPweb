@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 class Requests extends StatefulWidget {
   const Requests({Key? key}) : super(key: key);
@@ -16,6 +15,7 @@ class _RequestsState extends State<Requests> {
 
   @override
   Widget build(BuildContext context) {
+
     return Expanded(
       child: Padding(
         padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
@@ -289,7 +289,6 @@ class _RequestsState extends State<Requests> {
                             DataCell(
                               Text(
                                   snapshot.data!.docs[i].get('requested amount')
-
                                   //  item['requested amount'].toString(),
                                   ),
                             ),
@@ -320,6 +319,10 @@ class _RequestsState extends State<Requests> {
                                                     MaterialStateProperty.all(
                                                         Colors.green)),
                                             onPressed: () {
+
+                                              Random random = new Random();
+                                              int randomNumber = random.nextInt(999999) + 100000;
+
                                               print(snapshot.data!.docs[i]
                                                   .get('id'));
                                               FirebaseFirestore.instance
@@ -327,7 +330,13 @@ class _RequestsState extends State<Requests> {
                                                   .doc((snapshot.data!.docs[i]
                                                       .get('id')))
                                                   .update(
-                                                      {'Status': 'Accepted'});
+                                                      {'Status': 'Accepted', "Token" : randomNumber.toString()});
+                                              FirebaseFirestore.instance
+                                                  .collection('User')
+                                                  .doc((snapshot.data!.docs[i]
+                                                  .get('customerId')))
+                                                  .update(
+                                                  {"Token" : randomNumber.toString()});
                                             },
                                             child: Text(
                                               "Accept",
