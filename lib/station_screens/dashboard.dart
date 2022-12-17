@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:web/station_screens/request_action.dart';
 
 import 'OrderStatus.dart';
 import 'Requests.dart';
@@ -12,7 +13,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   //setting the expansion function for the navigation rail
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
   bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
@@ -268,6 +269,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           )
               : _selectedIndex == 1 ? OrderStatus()
               : _selectedIndex == 2 ? Requests()
+              : _selectedIndex == 3 ? RequestAction()
               : SizedBox.shrink(),
         ],
       ),
