@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:math';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +14,69 @@ class Requests extends StatefulWidget {
 }
 
 class _RequestsState extends State<Requests> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  String DeviceToken = "A";
+  String id = "";
+  String Token = "";
+
+  _fetchToken(id,Token) async {
+    await FirebaseFirestore.instance
+        .collection("User")
+        .doc(id)
+        .get()
+        .then((ds) {
+      DeviceToken = ds.data()!['DeviceToken'];
+      setState(() {
+        DeviceToken = ds.data()!['DeviceToken'];
+      });
+      sendPushMessage(DeviceToken,Token);
+      //print("DeviceToken: " + DeviceToken);
+    }).catchError((e) {});
+  }
+
+  sendPushMessage(DeviceToken,Token) async {
+    //print("DeviceToken: " + DeviceToken);
+    //print("Message");
+    try {
+      print("DeviceToken: " + DeviceToken);
+      print("Token: " + Token);
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'status': 'done',
+              'body': Token,
+              'title': "Your Token Number",
+            },
+            'notification': <String, dynamic>{
+              'title': "Your fuel request accepted",
+              'body': "Token Number: " + Token,
+              'android_channel_id': "channel"
+            },
+            'to': DeviceToken,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error message");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Expanded(
       child: Padding(
         padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
@@ -247,7 +308,7 @@ class _RequestsState extends State<Requests> {
                       // }
 
                       if (snapshot.hasData) {
-                        print(snapshot.data!.docs);
+                        //print(snapshot.data!.docs);
                         List<DataCell> displayedDataCell = [];
 
                         //for (var item in snapshot.data!.docs)
@@ -319,24 +380,37 @@ class _RequestsState extends State<Requests> {
                                                     MaterialStateProperty.all(
                                                         Colors.green)),
                                             onPressed: () {
-
                                               Random random = new Random();
-                                              int randomNumber = random.nextInt(999999) + 100000;
+                                              int randomNumber =
+                                                  random.nextInt(999999) +
+                                                      100000;
 
-                                              print(snapshot.data!.docs[i]
-                                                  .get('id'));
+                                              id = snapshot.data!.docs[i]
+                                                  .get('customerId');
+
+                                              print("customerId: " + id);
+
                                               FirebaseFirestore.instance
                                                   .collection('Requests')
                                                   .doc((snapshot.data!.docs[i]
                                                       .get('id')))
-                                                  .update(
-                                                      {'Status': 'Accepted', "Token" : randomNumber.toString()});
+                                                  .update({
+                                                'Status': 'Accepted',
+                                                "Token": randomNumber.toString()
+                                              });
                                               FirebaseFirestore.instance
                                                   .collection('User')
                                                   .doc((snapshot.data!.docs[i]
-                                                  .get('customerId')))
-                                                  .update(
-                                                  {"Token" : randomNumber.toString()});
+                                                      .get('customerId')))
+                                                  .update({
+                                                "Token": randomNumber.toString()
+                                              });
+                                              setState(() {
+                                                Token=randomNumber.toString();
+                                              });
+                                              _fetchToken(id,Token);
+                                              //sendPushMessage(DeviceToken);
+                                              //print("DeviceToken: " + DeviceToken);
                                             },
                                             child: Text(
                                               "Accept",
@@ -352,8 +426,8 @@ class _RequestsState extends State<Requests> {
                                                     MaterialStateProperty.all(
                                                         Colors.red)),
                                             onPressed: () {
-                                              print(snapshot.data!.docs[i]
-                                                  .get('id'));
+                                              // print(snapshot.data!.docs[i]
+                                              //     .get('id'));
                                               FirebaseFirestore.instance
                                                   .collection('Requests')
                                                   .doc((snapshot.data!.docs[i]
