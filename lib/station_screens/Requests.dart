@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:f_datetimerangepicker/f_datetimerangepicker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Requests extends StatefulWidget {
   const Requests({Key? key}) : super(key: key);
@@ -20,11 +22,12 @@ class _RequestsState extends State<Requests> {
     super.initState();
   }
 
+  String DateAndTime = "";
   String DeviceToken = "A";
   String id = "";
   String Token = "";
 
-  _fetchToken(id,Token) async {
+  _fetchToken(id, Token, dateAndTime) async {
     await FirebaseFirestore.instance
         .collection("User")
         .doc(id)
@@ -34,12 +37,12 @@ class _RequestsState extends State<Requests> {
       setState(() {
         DeviceToken = ds.data()!['DeviceToken'];
       });
-      sendPushMessage(DeviceToken,Token);
+      sendPushMessage(DeviceToken, Token, dateAndTime);
       //print("DeviceToken: " + DeviceToken);
     }).catchError((e) {});
   }
 
-  sendPushMessage(DeviceToken,Token) async {
+  sendPushMessage(DeviceToken, Token, dateAndTime) async {
     //print("DeviceToken: " + DeviceToken);
     //print("Message");
     try {
@@ -63,7 +66,8 @@ class _RequestsState extends State<Requests> {
             },
             'notification': <String, dynamic>{
               'title': "Your fuel request accepted",
-              'body': "Token Number: " + Token,
+              'body':
+                  "Token Number: " + Token + "\nScheduled time: " + dateAndTime,
               'android_channel_id': "channel"
             },
             'to': DeviceToken,
@@ -313,15 +317,21 @@ class _RequestsState extends State<Requests> {
 
                         //for (var item in snapshot.data!.docs)
                         for (int i = 0; i < snapshot.data!.docs.length; i++) {
-                          bool pending = snapshot.data!.docs[i]
-                              .get('Status')
-                              .toString()
-                              .startsWith("P");
+                          bool pending =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Pending";
 
-                          bool canceled = snapshot.data!.docs[i]
-                              .get('Status')
-                              .toString()
-                              .startsWith("C");
+                          bool accepted =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Accepted";
+
+                          bool canceled =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Cancelled";
+
+                          bool completed =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Completed";
 
                           displayedDataCell.add(
                             DataCell(
@@ -362,8 +372,10 @@ class _RequestsState extends State<Requests> {
                                   color: canceled
                                       ? Colors.red
                                       : pending
-                                          ? Colors.black
-                                          : Colors.green
+                                          ? Colors.grey
+                                          : accepted
+                                              ? Colors.green
+                                              : Colors.black
 
                                   //  item['Status'].toString(), style: TextStyle(fontWeight: FontWeight.bold, color: accepted ? Colors.green : Colors.red),
                                   ),
@@ -390,25 +402,81 @@ class _RequestsState extends State<Requests> {
 
                                               print("customerId: " + id);
 
-                                              FirebaseFirestore.instance
-                                                  .collection('Requests')
-                                                  .doc((snapshot.data!.docs[i]
-                                                      .get('id')))
-                                                  .update({
-                                                'Status': 'Accepted',
-                                                "Token": randomNumber.toString()
-                                              });
-                                              FirebaseFirestore.instance
-                                                  .collection('User')
-                                                  .doc((snapshot.data!.docs[i]
-                                                      .get('customerId')))
-                                                  .update({
-                                                "Token": randomNumber.toString()
-                                              });
+                                              DateTimeRangePicker(
+                                                  startText: "From",
+                                                  endText: "To",
+                                                  doneText: "Yes",
+                                                  cancelText: "Cancel",
+                                                  interval: 5,
+                                                  initialStartTime:
+                                                      DateTime.now(),
+                                                  initialEndTime:
+                                                      DateTime.now(),
+                                                  mode: DateTimeRangePickerMode
+                                                      .dateAndTime,
+                                                  minimumTime: DateTime.now(),
+                                                  maximumTime: DateTime.now()
+                                                      .add(Duration(days: 7)),
+                                                  use24hFormat: true,
+                                                  onConfirm: (start, end) {
+                                                    // print(start);
+                                                    // print(end);
+
+                                                    var dateFormat = DateFormat(
+                                                        'MM/dd/yyyy');
+                                                    var date = dateFormat
+                                                        .format(start);
+                                                    print(date);
+
+                                                    var startFormat =
+                                                        DateFormat('hh:mm a');
+                                                    var startDate = startFormat
+                                                        .format(start);
+                                                    print(startDate);
+
+                                                    var endFormat =
+                                                        DateFormat('hh:mm a');
+                                                    var endDate =
+                                                        endFormat.format(end);
+                                                    print(
+                                                        endDate); // 12/31/2000 11:59 PM <-- MM/dd 12H format
+
+                                                    FirebaseFirestore.instance
+                                                        .collection('Requests')
+                                                        .doc((snapshot
+                                                            .data!.docs[i]
+                                                            .get('id')))
+                                                        .update({
+                                                      'Status': 'Accepted',
+                                                      "Token": randomNumber
+                                                          .toString(),
+                                                      "DateAndTime":
+                                                          "$date\n$startDate - $endDate",
+                                                    });
+
+                                                    FirebaseFirestore.instance
+                                                        .collection('User')
+                                                        .doc((snapshot
+                                                            .data!.docs[i]
+                                                            .get('customerId')))
+                                                        .update({
+                                                      "Token": randomNumber
+                                                          .toString(),
+                                                      "DateAndTime":
+                                                          "$date\n$startDate - $endDate",
+                                                    });
+                                                    setState(() {
+                                                      DateAndTime =
+                                                          "$date\n$startDate - $endDate";
+                                                    });
+                                                    _fetchToken(
+                                                        id, Token, DateAndTime);
+                                                  }).showPicker(context);
+
                                               setState(() {
-                                                Token=randomNumber.toString();
+                                                Token = randomNumber.toString();
                                               });
-                                              _fetchToken(id,Token);
+
                                               //sendPushMessage(DeviceToken);
                                               //print("DeviceToken: " + DeviceToken);
                                             },
@@ -473,17 +541,29 @@ class _RequestsState extends State<Requests> {
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ))
-                                      : TextButton(
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Colors.green)),
-                                          onPressed: () {},
-                                          child: Text(
-                                            "Accepted",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )),
+                                      : accepted
+                                          ? TextButton(
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          Colors.green)),
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Accepted",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ))
+                                          : TextButton(
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          Colors.black)),
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Completed",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )),
                             ),
                           );
                         }
