@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
-class OrderDelivery extends StatefulWidget {
-  const OrderDelivery({Key? key}) : super(key: key);
+class FuelStationRequest extends StatefulWidget {
+  const FuelStationRequest({Key? key}) : super(key: key);
 
   @override
-  State<OrderDelivery> createState() => _OrderDeliveryState();
+  State<FuelStationRequest> createState() => _FuelStationRequestState();
 }
 
-class _OrderDeliveryState extends State<OrderDelivery> {
+class _FuelStationRequestState extends State<FuelStationRequest> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -45,7 +45,7 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Order Delivery",
+                    "Fuel station Request",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 28.0,
@@ -124,32 +124,20 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                       MaterialStateProperty.resolveWith(
                               (states) => Colors.grey.shade200),
                       columns: const [
-                        DataColumn(label: Text("ID")),
-                        DataColumn(label: Text("City of Fuel Station")),
-                        DataColumn(label: Text("Type of Fuel")),
-                        DataColumn(label: Text("Address of Fuel Station")),
-                        DataColumn(label: Text("Fuel Price")),
+                        DataColumn(label: Text("Fuel Station")),
+                        DataColumn(label: Text("Quantity")),
+                        DataColumn(label: Text("Fuel Type")),
+                        DataColumn(label: Text("Request Date")),
+                        DataColumn(label: Text("Total Cost")),
                         DataColumn(label: Text("Status")),
                       ],
                       rows: [
                         DataRow(cells: [
-                          DataCell(Text("1")),
                           DataCell(Text("Colombo")),
+                          DataCell(Text("150000l")),
                           DataCell(Text("Petrol")),
-                          DataCell(Text("Colombo , 10")),
-                          DataCell(Text("LKR 100/=")),
-                          DataCell(TextButton(
-                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
-                              onPressed: () {
-                              },
-                              child: Text("Completed", style: TextStyle(color: Colors.white),))),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text("2")),
-                          DataCell(Text("Kandy")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("Kandy , 10")),
-                          DataCell(Text("LKR 100/=")),
+                          DataCell(Text("10th july 2022")),
+                          DataCell(Text("LKR 500000/=")),
                           DataCell(TextButton(
                               style: ButtonStyle(
                                   backgroundColor:
@@ -161,23 +149,27 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                               ))),
                         ]),
                         DataRow(cells: [
-                          DataCell(Text("3")),
-                          DataCell(Text("Polanaruwa")),
+                          DataCell(Text("Kandy")),
+                          DataCell(Text("25000l")),
                           DataCell(Text("Petrol")),
-                          DataCell(Text("Polanaruwa , 10")),
-                          DataCell(Text("LKR 100/=")),
+                          DataCell(Text("11th Auguest 2022")),
+                          DataCell(Text("LKR 100,000/=")),
                           DataCell(TextButton(
-                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
-                              onPressed: () {
-                              },
-                              child: Text("Completed", style: TextStyle(color: Colors.white),))),
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.green)),
+                              onPressed: () {},
+                              child: Text(
+                                "Accepted",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                         DataRow(cells: [
-                          DataCell(Text("4")),
-                          DataCell(Text("Anuradhapuram")),
+                          DataCell(Text("Polanaruwa")),
+                          DataCell(Text("5000l")),
                           DataCell(Text("Petrol")),
-                          DataCell(Text("Anuradhapura , 10")),
-                          DataCell(Text("LKR 100/=")),
+                          DataCell(Text("10th September 2022")),
+                          DataCell(Text("LKR 15000/=")),
                           DataCell(TextButton(
                               style: ButtonStyle(
                                   backgroundColor:
@@ -185,6 +177,22 @@ class _OrderDeliveryState extends State<OrderDelivery> {
                               onPressed: () {},
                               child: Text(
                                 "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
+                        ]),
+                        DataRow(cells: [
+                          DataCell(Text("Anuradhapura")),
+                          DataCell(Text("8000l")),
+                          DataCell(Text("Petrol")),
+                          DataCell(Text("19th September 2022")),
+                          DataCell(Text("LKR 10000/=")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(Colors.green)),
+                              onPressed: () {},
+                              child: Text(
+                                "Accepted",
                                 style: TextStyle(color: Colors.white),
                               ))),
                         ]),

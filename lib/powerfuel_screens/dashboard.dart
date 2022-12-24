@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../station_screens/OrderStatus.dart';
 import 'FuelStations.dart';
 import 'OrderDelivery.dart';
+import 'StationRequest.dart';
 
 
 class PFDashboardScreen extends StatefulWidget {
@@ -14,12 +15,13 @@ class PFDashboardScreen extends StatefulWidget {
 
 class _PFDashboardScreenState extends State<PFDashboardScreen> {
   //setting the expansion function for the navigation rail
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //Let's start by adding the Navigation Rail
           Column(
@@ -68,25 +70,25 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
                     ),
                     NavigationRailDestination(
                       icon: Icon(
-                        Icons.person,
+                        Icons.local_gas_station,
                         color: Colors.white54,
                       ),
                       selectedIcon: Icon(
-                        Icons.person,
+                        Icons.local_gas_station,
                         color: Colors.white,
                       ),
-                      label: Text("Fuel Station"),
+                      label: Text("Fuel Stations"),
                     ),
                     NavigationRailDestination(
                       icon: Icon(
-                        Icons.settings,
+                        Icons.shopping_bag,
                         color: Colors.white54,
                       ),
                       selectedIcon: Icon(
-                        Icons.settings,
+                        Icons.shopping_bag,
                         color: Colors.white,
                       ),
-                      label: Text("Order of Fuel"),
+                      label: Text("Requests"),
                     ),
                   ],
                 ),
@@ -112,7 +114,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
               ?
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 60.0),
+              padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -257,7 +259,10 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
               ),
             ),
           )
-              : _selectedIndex == 1 ? OrderDelivery(): _selectedIndex == 2 ? FuelStations() : SizedBox.shrink(),
+              : _selectedIndex == 1 ? OrderDelivery()
+              : _selectedIndex == 2 ? FuelStations()
+              : _selectedIndex == 3 ? FuelStationRequest()
+              : SizedBox.shrink(),
         ],
       ),
       //let's add the floating action button

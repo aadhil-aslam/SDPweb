@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:web/station_screens/request_action.dart';
 
+import '../Login.dart';
 import 'OrderStatus.dart';
 import 'Requests.dart';
 
@@ -11,13 +16,52 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+
+
+  _logoutAlert() {
+    return showDialog(
+        context: context,
+        builder: (parm) {
+          return AlertDialog(
+            title: const Text(
+              'Do you want to logout?',
+              style: TextStyle(color: Colors.black, fontSize: 18),
+            ),
+            actions: [
+              TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    //backgroundColor: Colors.blueGrey,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel', style: TextStyle(fontSize: 17))),
+              TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.red,
+                    //backgroundColor: Colors.red,
+                  ),
+                  onPressed: () async {
+                    _logoutAlert();
+                  },
+                  child: const Text(
+                    'Logout',
+                    style: TextStyle(fontSize: 17),
+                  )),
+            ],
+          );
+        });
+  }
+
   //setting the expansion function for the navigation rail
-  int _selectedIndex = 1;
-  bool isExpanded = false;
+  int _selectedIndex = 2;
+  bool isExpanded = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //Let's start by adding the Navigation Rail
           Column(
@@ -25,16 +69,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               Expanded(
                 child: NavigationRail(
+                  trailing: Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: IconButton(
+                            icon: const Icon(
+                              Icons.logout,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              _logoutAlert();
+                            }),
+                      ),
+                    ),
+                  ),
+                  // leading: IconButton(
+                  //   color: Colors.white,
+                  //   onPressed: () {
+                  //     //let's trigger the navigation expansion
+                  //     setState(() {
+                  //       isExpanded = !isExpanded;
+                  //     });
+                  //   },
+                  //   icon: Icon(Icons.menu),
+                  // ),
                   onDestinationSelected: (int index) {
                     setState(() {
                       _selectedIndex = index;
                     });
                   },
                   selectedIndex: _selectedIndex,
-                  extended: true,
+                  extended: isExpanded,
                   backgroundColor: Color(0xff333951),
                   unselectedIconTheme:
-                  IconThemeData(color: Colors.white, opacity: 1),
+                      IconThemeData(color: Colors.white, opacity: 1),
                   unselectedLabelTextStyle: TextStyle(
                     color: Colors.white54,
                   ),
@@ -66,11 +136,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     NavigationRailDestination(
                       icon: Icon(
-                        Icons.person_pin,
+                        Icons.shopping_bag,
                         color: Colors.white54,
                       ),
                       selectedIcon: Icon(
-                        Icons.person_pin,
+                        Icons.shopping_bag,
                         color: Colors.white,
                       ),
                       label: Text("Customer requests"),
@@ -86,381 +156,242 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       label: Text("Profile"),
                     ),
-                    NavigationRailDestination(
-                      icon: Icon(
-                        Icons.settings,
-                        color: Colors.white54,
-                      ),
-                      selectedIcon: Icon(
-                        Icons.settings,
-                        color: Colors.white,
-                      ),
-                      label: Text("Order of Fuel"),
-                    ),
+                    // NavigationRailDestination(
+                    //   icon: Icon(
+                    //     Icons.settings,
+                    //     color: Colors.white54,
+                    //   ),
+                    //   selectedIcon: Icon(
+                    //     Icons.settings,
+                    //     color: Colors.white,
+                    //   ),
+                    //   label: Text("Order of Fuel"),
+                    // ),
                   ],
                 ),
               ),
-              // Container(
-              //   height: 70,
-              //   width: 72,
-              //   //color: const Color(0xff333951),
-              //   child: IconButton(
-              //     color: Colors.black,
-              //     onPressed: () {
-              //       //let's trigger the navigation expansion
-              //       setState(() {
-              //         isExpanded = !isExpanded;
-              //       });
-              //     },
-              //     icon: Icon(Icons.menu),
-              //   ),
-              // ),
+              //color: const Color(0xff333951),
             ],
           ),
           _selectedIndex == 0
-              ?
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 60.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //let's add the navigation menu for this project
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            //let's trigger the navigation expansion
-                            setState(() {
-                              isExpanded = !isExpanded;
-                            });
-                          },
-                          icon: Icon(Icons.menu),
-                        ),
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              "https://faces-img.xcdn.link/image-lorem-face-3430.jpg"),
-                          radius: 26.0,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Flexible(
-                            child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [Row(children: [Icon(Icons.article, size: 26.0,
-                                    ),
-                                      SizedBox(
-                                        width: 15.0,
-                                      ),
-                                      Text(
-                                        "Total Fuel station",
-                                        style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    ],),
-                                      SizedBox(height: 20.0,),
-                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                    ],
-                                  ),
-                                ))
-                        ),
-
-                        Flexible(
-                            child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [Row(children: [Icon(Icons.article, size: 26.0,
-                                    ),
-                                      SizedBox(
-                                        width: 15.0,
-                                      ),
-                                      Text(
-                                        "New Fuel Order",
-                                        style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    ],),
-                                      SizedBox(height: 20.0,),
-                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                    ],
-                                  ),
-                                ))
-                        ),
-
-                        Flexible(
-                            child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [Row(children: [Icon(Icons.article, size: 26.0,
-                                    ),
-                                      SizedBox(
-                                        width: 15.0,
-                                      ),
-                                      Text(
-                                        "Confirmed Order",
-                                        style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    ],),
-                                      SizedBox(height: 20.0,),
-                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                    ],
-                                  ),
-                                ))
-                        ),
-
-                        Flexible(
-                            child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [Row(children: [Icon(Icons.article, size: 26.0,
-                                    ),
-                                      SizedBox(
-                                        width: 15.0,
-                                      ),
-                                      Text(
-                                        "Cancelled Order",
-                                        style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )
-                                    ],),
-                                      SizedBox(height: 20.0,),
-                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
-                                    ],
-                                  ),
-                                ))
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              "6 Articles",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 28.0,
+              ? Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //let's add the navigation menu for this project
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // IconButton(
+                              //   onPressed: () {
+                              //     //let's trigger the navigation expansion
+                              //     setState(() {
+                              //       isExpanded = !isExpanded;
+                              //     });
+                              //   },
+                              //   icon: Icon(Icons.menu),
+                              // ),
+                              StreamBuilder<
+                                  DocumentSnapshot<Map<String, dynamic>>>(
+                                //key: Key(_uid),
+                                stream: FirebaseFirestore.instance
+                                    .collection('StationUser')
+                                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    //String username = snapshot.data?.data()?['username'];
+                                    //print(snapshot.data?.data()?['Token Number']);
+                                    return Text(
+                                        snapshot.data?.data()?['StationName'],
+                                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600));
+                                  }
+                                  return Text("Welcome",
+                                      style: TextStyle(fontSize: 28,fontWeight: FontWeight.w600));
+                                },
                               ),
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(
-                              "3 new Articles",
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          width: 300.0,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: "Type Fuel Station",
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.black26,
-                                ),
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "https://faces-img.xcdn.link/image-lorem-face-3430.jpg"),
+                                radius: 26.0,
                               ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-
-                    //let's set the filter section
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton.icon(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: Colors.deepPurple.shade400,
-                          ),
-                          label: Text(
-                            "2022, July 14, July 15, July 16",
-                            style: TextStyle(
-                              color: Colors.deepPurple.shade400,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            DropdownButton(
-                                hint: Text("Filter by"),
-                                items: [
-                                  DropdownMenuItem(
-                                    value: "Date",
-                                    child: Text("Date"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Reviews",
-                                    child: Text("Reviews"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Branches",
-                                    child: Text("Branches"),
-                                  ),
-                                ],
-                                onChanged: (value) {}),
-                            SizedBox(
-                              width: 20.0,
-                            ),
-                            DropdownButton(
-                                hint: Text("Order by"),
-                                items: [
-                                  DropdownMenuItem(
-                                    value: "Date",
-                                    child: Text("Date"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Reviews",
-                                    child: Text("Reviews"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "Branches",
-                                    child: Text("Branches"),
-                                  ),
-                                ],
-                                onChanged: (value) {}),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-                    //Now let's add the Table
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        DataTable(
-                            headingRowColor:
-                            MaterialStateProperty.resolveWith(
-                                    (states) => Colors.grey.shade200),
-                            columns: [
-                              DataColumn(label: Text("ID")),
-                              DataColumn(label: Text("City of Fual Station")),
-                              DataColumn(label: Text("Type of Fuel")),
-                              DataColumn(label: Text("Address of Fuel Station")),
-                              DataColumn(label: Text("Fuel Price")),
                             ],
-                            rows: [
-                              DataRow(cells: [
-                                DataCell(Text("1")),
-                                DataCell(Text("Colombo")),
-                                DataCell(Text("Petrol")),
-                                DataCell(Text("Colombo , 10")),
-                                DataCell(Text("LKR 100/=")),
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text("2")),
-                                DataCell(Text("Kandy")),
-                                DataCell(Text("Petrol")),
-                                DataCell(Text("Kandy , 10")),
-                                DataCell(Text("LKR 100/=")),
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text("3")),
-                                DataCell(Text("Polanaruwa")),
-                                DataCell(Text("Petrol")),
-                                DataCell(Text("Polanaruwa , 10")),
-                                DataCell(Text("LKR 100/=")),
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text("4")),
-                                DataCell(Text("Anuradhapuram")),
-                                DataCell(Text("Petrol")),
-                                DataCell(Text("Anuradhapura , 10")),
-                                DataCell(Text("LKR 100/=")),
-                              ]),
-                            ]),
-                        //Now let's set the pagination
-                        SizedBox(
-                          height: 40.0,
-                        ),
-                        Row(
-                          children: [
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "1",
-                                style:
-                                TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "2",
-                                style:
-                                TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "3",
-                                style:
-                                TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "See All",
-                                style:
-                                TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-          )
-              : _selectedIndex == 1 ? OrderStatus(): _selectedIndex == 2 ? Requests(): SizedBox.shrink(),
+                          ),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Flexible(
+                                  child: Card(
+                                      child: Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.article,
+                                          size: 26.0,
+                                        ),
+                                        SizedBox(
+                                          width: 15.0,
+                                        ),
+                                        Text(
+                                          "Total requests",
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "View Details",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ))),
+                              Flexible(
+                                  child: Card(
+                                      child: Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.article,
+                                          size: 26.0,
+                                        ),
+                                        SizedBox(
+                                          width: 15.0,
+                                        ),
+                                        Text(
+                                          "New Fuel Order",
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "View Details",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ))),
+                              Flexible(
+                                  child: Card(
+                                      child: Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.article,
+                                          size: 26.0,
+                                        ),
+                                        SizedBox(
+                                          width: 15.0,
+                                        ),
+                                        Text(
+                                          "Confirmed Order",
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "View Details",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ))),
+                              Flexible(
+                                  child: Card(
+                                      child: Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.article,
+                                          size: 26.0,
+                                        ),
+                                        SizedBox(
+                                          width: 15.0,
+                                        ),
+                                        Text(
+                                          "Cancelled Order",
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "View Details",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ))),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : _selectedIndex == 1
+                  ? OrderStatus()
+                  : _selectedIndex == 2
+                      ? Requests()
+                      : _selectedIndex == 3
+                          ? RequestAction()
+                          : SizedBox.shrink(),
         ],
       ),
       //let's add the floating action button

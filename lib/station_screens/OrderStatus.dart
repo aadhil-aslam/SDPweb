@@ -14,7 +14,7 @@ class _OrderStatusState extends State<OrderStatus> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 60.0),
+        padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -120,44 +120,80 @@ class _OrderStatusState extends State<OrderStatus> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   DataTable(
-                      headingRowColor:
-                      MaterialStateProperty.resolveWith(
-                              (states) => Colors.grey.shade200),
+                      headingRowColor: MaterialStateProperty.resolveWith(
+                          (states) => Colors.grey.shade200),
                       columns: const [
                         DataColumn(label: Text("Order Number")),
                         DataColumn(label: Text("Order date")),
                         DataColumn(label: Text("Type of Fuel")),
                         DataColumn(label: Text("Quantity")),
-                        DataColumn(label: Text("Total amount")),
+                        DataColumn(label: Text("Total cost")),
+                        DataColumn(label: Text("Status")),
                       ],
                       rows: [
                         DataRow(cells: [
                           DataCell(Text("1")),
-                          DataCell(Text("Colombo")),
+                          DataCell(Text("01.10.2022")),
                           DataCell(Text("Petrol")),
-                          DataCell(Text("Colombo , 10")),
-                          DataCell(Text("LKR 100/=")),
+                          DataCell(Text("100 liters")),
+                          DataCell(Text("LKR 50,000")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.red)),
+                              onPressed: () {},
+                              child: Text(
+                                "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text("2")),
-                          DataCell(Text("Kandy")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("Kandy , 10")),
-                          DataCell(Text("LKR 100/=")),
+                          DataCell(Text("01.10.2022")),
+                          DataCell(Text("Diesel")),
+                          DataCell(Text("150 liters")),
+                          DataCell(Text("LKR 150,000")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.red)),
+                              onPressed: () {},
+                              child: Text(
+                                "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text("3")),
-                          DataCell(Text("Polanaruwa")),
+                          DataCell(Text("01.10.2022")),
                           DataCell(Text("Petrol")),
-                          DataCell(Text("Polanaruwa , 10")),
-                          DataCell(Text("LKR 100/=")),
+                          DataCell(Text("200 liters")),
+                          DataCell(Text("LKR 250,000")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.red)),
+                              onPressed: () {},
+                              child: Text(
+                                "Pending",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                         DataRow(cells: [
                           DataCell(Text("4")),
-                          DataCell(Text("Anuradhapuram")),
+                          DataCell(Text("01.10.2022")),
                           DataCell(Text("Petrol")),
-                          DataCell(Text("Anuradhapura , 10")),
-                          DataCell(Text("LKR 100/=")),
+                          DataCell(Text("50 liters")),
+                          DataCell(Text("LKR 25,000")),
+                          DataCell(TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.green)),
+                              onPressed: () {},
+                              child: Text(
+                                "Accepted",
+                                style: TextStyle(color: Colors.white),
+                              ))),
                         ]),
                       ]),
                   //Now let's set the pagination
@@ -170,32 +206,28 @@ class _OrderStatusState extends State<OrderStatus> {
                         onPressed: () {},
                         child: Text(
                           "1",
-                          style:
-                          TextStyle(color: Colors.deepPurple),
+                          style: TextStyle(color: Colors.deepPurple),
                         ),
                       ),
                       TextButton(
                         onPressed: () {},
                         child: Text(
                           "2",
-                          style:
-                          TextStyle(color: Colors.deepPurple),
+                          style: TextStyle(color: Colors.deepPurple),
                         ),
                       ),
                       TextButton(
                         onPressed: () {},
                         child: Text(
                           "3",
-                          style:
-                          TextStyle(color: Colors.deepPurple),
+                          style: TextStyle(color: Colors.deepPurple),
                         ),
                       ),
                       TextButton(
                         onPressed: () {},
                         child: Text(
                           "See All",
-                          style:
-                          TextStyle(color: Colors.deepPurple),
+                          style: TextStyle(color: Colors.deepPurple),
                         ),
                       ),
                     ],

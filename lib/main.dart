@@ -1,9 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:web/station_screens/dashboard.dart';
-
+import 'package:web/station_screens/station.dart';
 import 'Home.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +12,9 @@ void main() async {
           messagingSenderId: "215634344322",
           appId: "1:215634344322:web:9be489790c2fd3e773779b",));
 
-  runApp(MaterialApp(home: MyApp()));
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //debugShowCheckedModeBanner: false,
-      home: DashboardScreen(),
+      home: //station(),
+      MyHomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
-

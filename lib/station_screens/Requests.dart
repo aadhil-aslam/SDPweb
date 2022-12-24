@@ -1,6 +1,13 @@
+import 'dart:convert';
+import 'dart:math';
+import 'package:f_datetimerangepicker/f_datetimerangepicker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'package:intl/intl.dart';
 
 class Requests extends StatefulWidget {
   const Requests({Key? key}) : super(key: key);
@@ -11,10 +18,150 @@ class Requests extends StatefulWidget {
 
 class _RequestsState extends State<Requests> {
   @override
+  void initState() {
+    _fetchID();
+    super.initState();
+  }
+
+  String ResceduleDate = "";
+  String DateAndTime = "";
+  String DeviceToken = "A";
+  String id = "";
+  String Token = "";
+
+  String Name = "";
+  String StId = "";
+  String StName = "";
+
+  _fetchID() async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser;
+    if (firebaseUser != null) {
+      await FirebaseFirestore.instance
+          .collection("StationUser")
+          .doc(firebaseUser.uid)
+          .get()
+          .then((ds) {
+        setState(() {
+          Name = ds.data()!['username'];
+          StId = ds.data()!['StationID'];
+          StName = ds.data()!['StationName'];
+        });
+        print(Name);
+        print(StId);
+        print(StName);
+      }).catchError((e) {});
+    } else {
+      Name = '';
+    }
+  }
+
+  _fetchToken(id, Token, dateAndTime) async {
+    await FirebaseFirestore.instance
+        .collection("User")
+        .doc(id)
+        .get()
+        .then((ds) {
+      DeviceToken = ds.data()!['DeviceToken'];
+      setState(() {
+        DeviceToken = ds.data()!['DeviceToken'];
+      });
+      sendPushMessage(DeviceToken, Token, dateAndTime);
+      //print("DeviceToken: " + DeviceToken);
+    }).catchError((e) {});
+  }
+
+  sendPushMessage(DeviceToken, Token, dateAndTime) async {
+    //print("DeviceToken: " + DeviceToken);
+    //print("Message");
+    try {
+      print("DeviceToken: " + DeviceToken);
+      print("Token: " + Token);
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'status': 'done',
+              'body': Token,
+              'title': "Your Token Number",
+            },
+            'notification': <String, dynamic>{
+              'title': "Your fuel request accepted",
+              'body':
+                  "Token Number: " + Token + "\nScheduled time: " + dateAndTime,
+              'android_channel_id': "channel"
+            },
+            'to': DeviceToken,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error message");
+    }
+  }
+
+  _fetchTokenCancelled(id, dateAndTime) async {
+    await FirebaseFirestore.instance
+        .collection("User")
+        .doc(id)
+        .get()
+        .then((ds) {
+      DeviceToken = ds.data()!['DeviceToken'];
+      setState(() {
+        DeviceToken = ds.data()!['DeviceToken'];
+      });
+      sendCancelledMessage(DeviceToken, dateAndTime);
+      //print("DeviceToken: " + DeviceToken);
+    }).catchError((e) {});
+  }
+
+  sendCancelledMessage(DeviceToken, dateAndTime) async {
+    //print("DeviceToken: " + DeviceToken);
+    //print("Message");
+    try {
+      print("DeviceToken: " + DeviceToken);
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'status': 'done',
+              'body': dateAndTime,
+              'title': "Request cancelled",
+            },
+            'notification': <String, dynamic>{
+              'title': "Your fuel request has been cancelled",
+              'body': "Resceduled time: " + dateAndTime,
+              'android_channel_id': "channel"
+            },
+            'to': DeviceToken,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error message");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 60.0),
+        padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -45,7 +192,7 @@ class _RequestsState extends State<Requests> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Customer requests",
+                    "Customer Requests",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 28.0,
@@ -119,87 +266,378 @@ class _RequestsState extends State<Requests> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  DataTable(
-                      headingRowColor:
-                      MaterialStateProperty.resolveWith(
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('Requests')
+                        .where('stationID', isEqualTo: StId)
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
+
+                      // if (snapshot.connectionState == ConnectionState.waiting) {
+                      //   return const Text("Loading");
+                      // }
+
+                      if (snapshot.hasData) {
+                        //print(snapshot.data!.docs);
+                        List<DataCell> displayedDataCell = [];
+
+                        //for (var item in snapshot.data!.docs)
+                        for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                          bool pending =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Pending";
+
+                          bool accepted =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Accepted";
+
+                          bool canceled =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Cancelled";
+
+                          bool completed =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Completed";
+
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('Token')
+                                  //item['Token'].toString(),
+                                  ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('Vehicle number')
+
+                                  //item['Vehicle number'].toString(),
+                                  ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('customerName')
+
+                                  //item['customerName'].toString(),
+                                  ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('Requested time')
+                                  //item['customerName'].toString(),
+                                  ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('fuelType')
+                                //item['customerName'].toString(),
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(
+                                  snapshot.data!.docs[i].get('requested amount')
+                                  //  item['requested amount'].toString(),
+                                  ),
+                            ),
+                          );
+                          displayedDataCell.add(DataCell(
+                            Text(
+                              snapshot.data!.docs[i].get('Status'),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: canceled
+                                      ? Colors.red
+                                      : pending
+                                          ? Colors.grey
+                                          : accepted
+                                              ? Colors.green
+                                              : Colors.black
+
+                                  //  item['Status'].toString(), style: TextStyle(fontWeight: FontWeight.bold, color: accepted ? Colors.green : Colors.red),
+                                  ),
+                            ),
+                          ));
+                          displayedDataCell.add(
+                            DataCell(
+                              pending
+                                  ? Row(
+                                      children: [
+                                        TextButton(
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.green)),
+                                            onPressed: () {
+                                              /// Generate token
+                                              Random random = new Random();
+                                              int randomNumber =
+                                                  random.nextInt(999999) +
+                                                      100000;
+
+                                              id = snapshot.data!.docs[i]
+                                                  .get('customerId');
+
+                                              print("customerId: " + id);
+
+                                              /// DatePicker
+                                              DatePicker.showDateTimePicker(
+                                                  context,
+                                                  showTitleActions: true,
+                                                  minTime: DateTime.now(),
+                                                  maxTime: DateTime.now().add(
+                                                      const Duration(days: 7)),
+                                                  onChanged: (date) {
+                                                print(
+                                                    'change $date in time zone ' +
+                                                        date.timeZoneOffset
+                                                            .inHours
+                                                            .toString());
+                                              }, onConfirm: (date) {
+                                                print('confirm $date');
+
+                                                var dateFormat = DateFormat(
+                                                    'MM/dd/yyyy hh:mm a');
+                                                var startDate =
+                                                    dateFormat.format(date);
+                                                print(startDate);
+
+                                                var eDate = date.add(
+                                                    const Duration(hours: 3));
+
+                                                var endFormat =
+                                                    DateFormat('hh:mm a');
+                                                var endDate =
+                                                    endFormat.format(eDate);
+                                                print(endDate);
+
+                                                /// update request
+                                                FirebaseFirestore.instance
+                                                    .collection('Requests')
+                                                    .doc((snapshot.data!.docs[i]
+                                                        .get('id')))
+                                                    .update({
+                                                  'Status': 'Accepted',
+                                                  "Token":
+                                                      randomNumber.toString(),
+                                                  "DateAndTime":
+                                                      "$startDate - $endDate",
+                                                });
+
+                                                /// update user
+                                                FirebaseFirestore.instance
+                                                    .collection('User')
+                                                    .doc((snapshot.data!.docs[i]
+                                                        .get('customerId')))
+                                                    .update({
+                                                  "Token":
+                                                      randomNumber.toString(),
+                                                  "DateAndTime":
+                                                      "$startDate - $endDate",
+                                                });
+
+                                                setState(() {
+                                                  DateAndTime =
+                                                      "$startDate - $endDate";
+                                                });
+
+                                                _fetchToken(
+                                                    id, Token, DateAndTime);
+                                              }, currentTime: DateTime.now());
+
+                                              setState(() {
+                                                Token = randomNumber.toString();
+                                              });
+                                            },
+                                            child: Text(
+                                              "Accept",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            )),
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        TextButton(
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.red)),
+                                            onPressed: () {
+                                              id = snapshot.data!.docs[i]
+                                                  .get('customerId');
+
+                                              DatePicker.showDateTimePicker(
+                                                  context,
+                                                  showTitleActions: true,
+                                                  minTime: DateTime.now(),
+                                                  maxTime: DateTime.now().add(
+                                                      const Duration(days: 7)),
+                                                  onChanged: (date) {
+                                                print(
+                                                    'change $date in time zone ' +
+                                                        date.timeZoneOffset
+                                                            .inHours
+                                                            .toString());
+                                              }, onConfirm: (date) {
+                                                var dateFormat = DateFormat(
+                                                    'MM/dd/yyyy');
+                                                var ResceduledDate =
+                                                dateFormat.format(date);
+                                                print(ResceduledDate);
+
+                                                /// update request
+                                                FirebaseFirestore.instance
+                                                    .collection('Requests')
+                                                    .doc((snapshot.data!.docs[i]
+                                                        .get('id')))
+                                                    .update({
+                                                  'Status': 'Cancelled',
+                                                  "Rescheduled Date":
+                                                "$ResceduledDate",
+                                                });
+
+                                                /// update user
+                                                FirebaseFirestore.instance
+                                                    .collection('User')
+                                                    .doc((snapshot.data!.docs[i]
+                                                        .get('customerId')))
+                                                    .update({
+                                                  "Requested": "No",
+                                                  "requested amount": "null",
+                                                  "Rescheduled Date":
+                                                  "$ResceduledDate",
+                                                });
+                                                setState(() {
+                                                  ResceduleDate =
+                                                  "$ResceduledDate";
+                                                });
+
+                                                _fetchTokenCancelled(
+                                                    id, ResceduleDate);
+                                              }, currentTime: DateTime.now());
+                                            },
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ))
+                                      ],
+                                    )
+                                  : canceled
+                                      ? TextButton(
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.red)),
+                                          onPressed: () {},
+                                          child: Text(
+                                            "Cancelled",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ))
+                                      : accepted
+                                          ? TextButton(
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          Colors.green)),
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Accepted",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ))
+                                          : TextButton(
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          Colors.black)),
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Completed",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )),
+                            ),
+                          );
+                        }
+
+                        return DataTable(
+                          headingRowColor: MaterialStateProperty.resolveWith(
                               (states) => Colors.grey.shade200),
-                      columns: const [
-                        DataColumn(label: Text("Order Number")),
-                        DataColumn(label: Text("Order date")),
-                        DataColumn(label: Text("Type of Fuel")),
-                        DataColumn(label: Text("Quantity")),
-                        DataColumn(label: Text("Total amount")),
-                      ],
-                      rows: [
-                        DataRow(cells: [
-                          DataCell(Text("1")),
-                          DataCell(Text("Colombo")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("Colombo , 10")),
-                          DataCell(Text("LKR 100/=")),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text("2")),
-                          DataCell(Text("Kandy")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("Kandy , 10")),
-                          DataCell(Text("LKR 100/=")),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text("3")),
-                          DataCell(Text("Polanaruwa")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("Polanaruwa , 10")),
-                          DataCell(Text("LKR 100/=")),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text("4")),
-                          DataCell(Text("Anuradhapuram")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("Anuradhapura , 10")),
-                          DataCell(Text("LKR 100/=")),
-                        ]),
-                      ]),
-                  //Now let's set the pagination
-                  SizedBox(
-                    height: 40.0,
+                          columns: const <DataColumn>[
+                            DataColumn(
+                              label: Text(
+                                'Token',
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Vehicle number',
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Customer Name',
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Request Date',
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Fuel type',
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Quantity',
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Status',
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Action',
+                              ),
+                            ),
+                          ],
+                          rows: <DataRow>[
+                            for (int i = 0;
+                                i < displayedDataCell.length;
+                                i += 8)
+                              DataRow(
+                                  // onSelectChanged: (value) {
+                                  //   //print();
+                                  // },
+                                  cells: [
+                                    displayedDataCell[i],
+                                    displayedDataCell[i + 1],
+                                    displayedDataCell[i + 2],
+                                    displayedDataCell[i + 3],
+                                    displayedDataCell[i + 4],
+                                    displayedDataCell[i + 5],
+                                    displayedDataCell[i + 6],
+                                    displayedDataCell[i + 7],
+                                  ])
+                          ],
+                        );
+                      }
+                      return Center(child: const CircularProgressIndicator());
+                    },
                   ),
-                  Row(
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "1",
-                          style:
-                          TextStyle(color: Colors.deepPurple),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "2",
-                          style:
-                          TextStyle(color: Colors.deepPurple),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "3",
-                          style:
-                          TextStyle(color: Colors.deepPurple),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "See All",
-                          style:
-                          TextStyle(color: Colors.deepPurple),
-                        ),
-                      ),
-                    ],
-                  )
                 ],
               )
             ],
