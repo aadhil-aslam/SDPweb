@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:f_datetimerangepicker/f_datetimerangepicker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,14 +19,41 @@ class Requests extends StatefulWidget {
 class _RequestsState extends State<Requests> {
   @override
   void initState() {
-    // TODO: implement initState
+    _fetchID();
     super.initState();
   }
 
+  String ResceduleDate = "";
   String DateAndTime = "";
   String DeviceToken = "A";
   String id = "";
   String Token = "";
+
+  String Name = "";
+  String StId = "";
+  String StName = "";
+
+  _fetchID() async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser;
+    if (firebaseUser != null) {
+      await FirebaseFirestore.instance
+          .collection("StationUser")
+          .doc(firebaseUser.uid)
+          .get()
+          .then((ds) {
+        setState(() {
+          Name = ds.data()!['username'];
+          StId = ds.data()!['StationID'];
+          StName = ds.data()!['StationName'];
+        });
+        print(Name);
+        print(StId);
+        print(StName);
+      }).catchError((e) {});
+    } else {
+      Name = '';
+    }
+  }
 
   _fetchToken(id, Token, dateAndTime) async {
     await FirebaseFirestore.instance
@@ -68,6 +96,56 @@ class _RequestsState extends State<Requests> {
               'title': "Your fuel request accepted",
               'body':
                   "Token Number: " + Token + "\nScheduled time: " + dateAndTime,
+              'android_channel_id': "channel"
+            },
+            'to': DeviceToken,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error message");
+    }
+  }
+
+  _fetchTokenCancelled(id, dateAndTime) async {
+    await FirebaseFirestore.instance
+        .collection("User")
+        .doc(id)
+        .get()
+        .then((ds) {
+      DeviceToken = ds.data()!['DeviceToken'];
+      setState(() {
+        DeviceToken = ds.data()!['DeviceToken'];
+      });
+      sendCancelledMessage(DeviceToken, dateAndTime);
+      //print("DeviceToken: " + DeviceToken);
+    }).catchError((e) {});
+  }
+
+  sendCancelledMessage(DeviceToken, dateAndTime) async {
+    //print("DeviceToken: " + DeviceToken);
+    //print("Message");
+    try {
+      print("DeviceToken: " + DeviceToken);
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'status': 'done',
+              'body': dateAndTime,
+              'title': "Request cancelled",
+            },
+            'notification': <String, dynamic>{
+              'title': "Your fuel request has been cancelled",
+              'body': "Resceduled time: " + dateAndTime,
               'android_channel_id': "channel"
             },
             'to': DeviceToken,
@@ -188,118 +266,10 @@ class _RequestsState extends State<Requests> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // DataTable(
-                  //     headingRowColor:
-                  //     MaterialStateProperty.resolveWith(
-                  //             (states) => Colors.grey.shade200),
-                  //     columns: const [
-                  //       DataColumn(label: Text("Token Number")),
-                  //       DataColumn(label: Text("Vehicle Number")),
-                  //       DataColumn(label: Text("Customer Name")),
-                  //       DataColumn(label: Text("Fuel Type")),
-                  //       DataColumn(label: Text("Quantity")),
-                  //       DataColumn(label: Text("Total cost")),
-                  //       DataColumn(label: Text("Status")),
-                  //     ],
-                  //     rows: [
-                  //       DataRow(cells: [
-                  //         DataCell(Text("1564")),
-                  //         DataCell(Text("ABC1234")),
-                  //         DataCell(Text("Nawab")),
-                  //         DataCell(Text("Petrol")),
-                  //         DataCell(Text("2 liters")),
-                  //         DataCell(Text("LKR 500")),
-                  //         DataCell
-                  //           // (DropdownButton(
-                  //           //   hint: Text("Filter by"),
-                  //           //   items: [
-                  //           //     DropdownMenuItem(
-                  //           //       value: "Date",
-                  //           //       child: Text("Date"),
-                  //           //     ),
-                  //           //     DropdownMenuItem(
-                  //           //       value: "Reviews",
-                  //           //       child: Text("Reviews"),
-                  //           //     ),
-                  //           //     DropdownMenuItem(
-                  //           //       value: "Branches",
-                  //           //       child: Text("Branches"),
-                  //           //     ),
-                  //           //   ],
-                  //           //   onChanged: (value) {}))
-                  //           (TextButton(
-                  //             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
-                  //             onPressed: () {
-                  //             },
-                  //             child: Text("Accepted", style: TextStyle(color: Colors.white),))),
-                  //       ]),
-                  //       DataRow(cells: [
-                  //         DataCell(TextButton(
-                  //             style: ButtonStyle(
-                  //                 backgroundColor:
-                  //                 MaterialStateProperty.all(Colors.red)),
-                  //             onPressed: () {},
-                  //             child: Text(
-                  //               "Pending",
-                  //               style: TextStyle(color: Colors.white),
-                  //             ))),
-                  //         DataCell(Text("ABC1234")),
-                  //         DataCell(Text("Priya")),
-                  //         DataCell(Text("Petrol")),
-                  //         DataCell(Text("5 liters")),
-                  //         DataCell(Text("LKR 2000")),
-                  //         DataCell(TextButton(
-                  //             style: ButtonStyle(
-                  //                 backgroundColor:
-                  //                 MaterialStateProperty.all(Colors.red)),
-                  //             onPressed: () {},
-                  //             child: Text(
-                  //               "Pending",
-                  //               style: TextStyle(color: Colors.white),
-                  //             ))),
-                  //       ]),
-                  //       DataRow(cells: [
-                  //         DataCell(TextButton(
-                  //             style: ButtonStyle(
-                  //                 backgroundColor:
-                  //                 MaterialStateProperty.all(Colors.red)),
-                  //             onPressed: () {},
-                  //             child: Text(
-                  //               "Pending",
-                  //               style: TextStyle(color: Colors.white),
-                  //             ))),
-                  //         DataCell(Text("ABC1234")),
-                  //         DataCell(Text("Aadhil")),
-                  //         DataCell(Text("Petrol")),
-                  //         DataCell(Text("10 liters")),
-                  //         DataCell(Text("LKR 4000")),
-                  //         DataCell(TextButton(
-                  //             style: ButtonStyle(
-                  //                 backgroundColor:
-                  //                 MaterialStateProperty.all(Colors.red)),
-                  //             onPressed: () {},
-                  //             child: Text(
-                  //               "Pending",
-                  //               style: TextStyle(color: Colors.white),
-                  //             ))),
-                  //       ]),
-                  //       DataRow(cells: [
-                  //         DataCell(Text("4246")),
-                  //         DataCell(Text("ABC1234")),
-                  //         DataCell(Text("User")),
-                  //         DataCell(Text("Petrol")),
-                  //         DataCell(Text("5 liters")),
-                  //         DataCell(Text("LKR 2500")),
-                  //         DataCell(TextButton(
-                  //             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
-                  //             onPressed: () {
-                  //             },
-                  //             child: Text("Accepted", style: TextStyle(color: Colors.white),))),
-                  //       ]),
-                  //     ]),
                   StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('Requests')
+                        .where('stationID', isEqualTo: StId)
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -358,6 +328,20 @@ class _RequestsState extends State<Requests> {
                           );
                           displayedDataCell.add(
                             DataCell(
+                              Text(snapshot.data!.docs[i].get('Requested time')
+                                  //item['customerName'].toString(),
+                                  ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('fuelType')
+                                //item['customerName'].toString(),
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
                               Text(
                                   snapshot.data!.docs[i].get('requested amount')
                                   //  item['requested amount'].toString(),
@@ -392,6 +376,7 @@ class _RequestsState extends State<Requests> {
                                                     MaterialStateProperty.all(
                                                         Colors.green)),
                                             onPressed: () {
+                                              /// Generate token
                                               Random random = new Random();
                                               int randomNumber =
                                                   random.nextInt(999999) +
@@ -402,83 +387,74 @@ class _RequestsState extends State<Requests> {
 
                                               print("customerId: " + id);
 
-                                              DateTimeRangePicker(
-                                                  startText: "From",
-                                                  endText: "To",
-                                                  doneText: "Yes",
-                                                  cancelText: "Cancel",
-                                                  interval: 5,
-                                                  initialStartTime:
-                                                      DateTime.now(),
-                                                  initialEndTime:
-                                                      DateTime.now(),
-                                                  mode: DateTimeRangePickerMode
-                                                      .dateAndTime,
-                                                  minimumTime: DateTime.now(),
-                                                  maximumTime: DateTime.now()
-                                                      .add(Duration(days: 7)),
-                                                  use24hFormat: true,
-                                                  onConfirm: (start, end) {
-                                                    // print(start);
-                                                    // print(end);
+                                              /// DatePicker
+                                              DatePicker.showDateTimePicker(
+                                                  context,
+                                                  showTitleActions: true,
+                                                  minTime: DateTime.now(),
+                                                  maxTime: DateTime.now().add(
+                                                      const Duration(days: 7)),
+                                                  onChanged: (date) {
+                                                print(
+                                                    'change $date in time zone ' +
+                                                        date.timeZoneOffset
+                                                            .inHours
+                                                            .toString());
+                                              }, onConfirm: (date) {
+                                                print('confirm $date');
 
-                                                    var dateFormat = DateFormat(
-                                                        'MM/dd/yyyy');
-                                                    var date = dateFormat
-                                                        .format(start);
-                                                    print(date);
+                                                var dateFormat = DateFormat(
+                                                    'MM/dd/yyyy hh:mm a');
+                                                var startDate =
+                                                    dateFormat.format(date);
+                                                print(startDate);
 
-                                                    var startFormat =
-                                                        DateFormat('hh:mm a');
-                                                    var startDate = startFormat
-                                                        .format(start);
-                                                    print(startDate);
+                                                var eDate = date.add(
+                                                    const Duration(hours: 3));
 
-                                                    var endFormat =
-                                                        DateFormat('hh:mm a');
-                                                    var endDate =
-                                                        endFormat.format(end);
-                                                    print(
-                                                        endDate); // 12/31/2000 11:59 PM <-- MM/dd 12H format
+                                                var endFormat =
+                                                    DateFormat('hh:mm a');
+                                                var endDate =
+                                                    endFormat.format(eDate);
+                                                print(endDate);
 
-                                                    FirebaseFirestore.instance
-                                                        .collection('Requests')
-                                                        .doc((snapshot
-                                                            .data!.docs[i]
-                                                            .get('id')))
-                                                        .update({
-                                                      'Status': 'Accepted',
-                                                      "Token": randomNumber
-                                                          .toString(),
-                                                      "DateAndTime":
-                                                          "$date\n$startDate - $endDate",
-                                                    });
+                                                /// update request
+                                                FirebaseFirestore.instance
+                                                    .collection('Requests')
+                                                    .doc((snapshot.data!.docs[i]
+                                                        .get('id')))
+                                                    .update({
+                                                  'Status': 'Accepted',
+                                                  "Token":
+                                                      randomNumber.toString(),
+                                                  "DateAndTime":
+                                                      "$startDate - $endDate",
+                                                });
 
-                                                    FirebaseFirestore.instance
-                                                        .collection('User')
-                                                        .doc((snapshot
-                                                            .data!.docs[i]
-                                                            .get('customerId')))
-                                                        .update({
-                                                      "Token": randomNumber
-                                                          .toString(),
-                                                      "DateAndTime":
-                                                          "$date\n$startDate - $endDate",
-                                                    });
-                                                    setState(() {
-                                                      DateAndTime =
-                                                          "$date\n$startDate - $endDate";
-                                                    });
-                                                    _fetchToken(
-                                                        id, Token, DateAndTime);
-                                                  }).showPicker(context);
+                                                /// update user
+                                                FirebaseFirestore.instance
+                                                    .collection('User')
+                                                    .doc((snapshot.data!.docs[i]
+                                                        .get('customerId')))
+                                                    .update({
+                                                  "Token":
+                                                      randomNumber.toString(),
+                                                  "DateAndTime":
+                                                      "$startDate - $endDate",
+                                                });
+
+                                                setState(() {
+                                                  DateAndTime =
+                                                      "$startDate - $endDate";
+                                                });
+
+                                                _fetchToken(
+                                                    id, Token, DateAndTime);
+                                              }, currentTime: DateTime.now());
 
                                               setState(() {
                                                 Token = randomNumber.toString();
                                               });
-
-                                              //sendPushMessage(DeviceToken);
-                                              //print("DeviceToken: " + DeviceToken);
                                             },
                                             child: Text(
                                               "Accept",
@@ -494,33 +470,58 @@ class _RequestsState extends State<Requests> {
                                                     MaterialStateProperty.all(
                                                         Colors.red)),
                                             onPressed: () {
-                                              // print(snapshot.data!.docs[i]
-                                              //     .get('id'));
-                                              FirebaseFirestore.instance
-                                                  .collection('Requests')
-                                                  .doc((snapshot.data!.docs[i]
-                                                      .get('id')))
-                                                  .update(
-                                                      {'Status': 'Cancelled'});
+                                              id = snapshot.data!.docs[i]
+                                                  .get('customerId');
 
-                                              // StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                                              //   //key: Key(_uid),
-                                              //   stream: FirebaseFirestore.instance
-                                              //       .collection('Requests')
-                                              //       .doc(snapshot.data!.docs[index].get('customerId'))
-                                              //       .snapshots(),
-                                              //   builder: (context, snapshot) {
-                                              //     if (snapshot.hasData) {
-                                              //       //String username = snapshot.data?.data()?['username'];
-                                              //       print(snapshot.data?.data()?['requested amount']);
-                                              //       return Text(snapshot.data!['requested amount'],
-                                              //           style: TextStyle(fontSize: 17));
-                                              //     }
-                                              //     print('requested amount');
-                                              //     return Text("requested amount",
-                                              //         style: TextStyle(fontSize: 20));
-                                              //   },
-                                              // );
+                                              DatePicker.showDateTimePicker(
+                                                  context,
+                                                  showTitleActions: true,
+                                                  minTime: DateTime.now(),
+                                                  maxTime: DateTime.now().add(
+                                                      const Duration(days: 7)),
+                                                  onChanged: (date) {
+                                                print(
+                                                    'change $date in time zone ' +
+                                                        date.timeZoneOffset
+                                                            .inHours
+                                                            .toString());
+                                              }, onConfirm: (date) {
+                                                var dateFormat = DateFormat(
+                                                    'MM/dd/yyyy');
+                                                var ResceduledDate =
+                                                dateFormat.format(date);
+                                                print(ResceduledDate);
+
+                                                /// update request
+                                                FirebaseFirestore.instance
+                                                    .collection('Requests')
+                                                    .doc((snapshot.data!.docs[i]
+                                                        .get('id')))
+                                                    .update({
+                                                  'Status': 'Cancelled',
+                                                  "Rescheduled Date":
+                                                "$ResceduledDate",
+                                                });
+
+                                                /// update user
+                                                FirebaseFirestore.instance
+                                                    .collection('User')
+                                                    .doc((snapshot.data!.docs[i]
+                                                        .get('customerId')))
+                                                    .update({
+                                                  "Requested": "No",
+                                                  "requested amount": "null",
+                                                  "Rescheduled Date":
+                                                  "$ResceduledDate",
+                                                });
+                                                setState(() {
+                                                  ResceduleDate =
+                                                  "$ResceduledDate";
+                                                });
+
+                                                _fetchTokenCancelled(
+                                                    id, ResceduleDate);
+                                              }, currentTime: DateTime.now());
                                             },
                                             child: Text(
                                               "Cancel",
@@ -589,6 +590,16 @@ class _RequestsState extends State<Requests> {
                             ),
                             DataColumn(
                               label: Text(
+                                'Request Date',
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                'Fuel type',
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
                                 'Quantity',
                               ),
                             ),
@@ -606,7 +617,7 @@ class _RequestsState extends State<Requests> {
                           rows: <DataRow>[
                             for (int i = 0;
                                 i < displayedDataCell.length;
-                                i += 6)
+                                i += 8)
                               DataRow(
                                   // onSelectChanged: (value) {
                                   //   //print();
@@ -618,6 +629,8 @@ class _RequestsState extends State<Requests> {
                                     displayedDataCell[i + 3],
                                     displayedDataCell[i + 4],
                                     displayedDataCell[i + 5],
+                                    displayedDataCell[i + 6],
+                                    displayedDataCell[i + 7],
                                   ])
                           ],
                         );
@@ -625,42 +638,6 @@ class _RequestsState extends State<Requests> {
                       return Center(child: const CircularProgressIndicator());
                     },
                   ),
-                  //Now let's set the pagination
-                  SizedBox(
-                    height: 40.0,
-                  ),
-                  Row(
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "1",
-                          style: TextStyle(color: Colors.deepPurple),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "2",
-                          style: TextStyle(color: Colors.deepPurple),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "3",
-                          style: TextStyle(color: Colors.deepPurple),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "See All",
-                          style: TextStyle(color: Colors.deepPurple),
-                        ),
-                      ),
-                    ],
-                  )
                 ],
               )
             ],
