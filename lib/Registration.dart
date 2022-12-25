@@ -42,11 +42,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  var _usernameController = TextEditingController();
-  var _stationIDController = TextEditingController();
-  var _stationNameController = TextEditingController();
-  var _emailController = TextEditingController();
-  var _passwordController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _stationIDController = TextEditingController();
+  final _stationNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   Future<void> createUserWithEmailAndPassword() async {
     try {

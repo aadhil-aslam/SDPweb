@@ -17,8 +17,169 @@ class Requests extends StatefulWidget {
 }
 
 class _RequestsState extends State<Requests> {
+
+  // sendRequest() {
+  //   return showDialog(
+  //       context: context,
+  //       builder: (parm) {
+  //         return Container(
+  //           color: Colors.transparent,
+  //           child: Container(
+  //             decoration: BoxDecoration(
+  //                 color: Colors.white,
+  //                 borderRadius: BorderRadius.circular(8),
+  //                 boxShadow: [
+  //                   BoxShadow(
+  //                       color: Colors.grey,
+  //                       offset: Offset(0, 3),
+  //                       blurRadius: 24)
+  //                 ]),
+  //             height: 430,
+  //             width: 350,
+  //             child: Column(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: [
+  //                 SizedBox(
+  //                   height: 30,
+  //                 ),
+  //                 Text(
+  //                   "LOGIN",
+  //                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+  //                 ),
+  //                 SizedBox(
+  //                   height: 30,
+  //                 ),
+  //                 Padding(
+  //                   padding: const EdgeInsets.symmetric(horizontal: 20),
+  //                   child: Text('Email Can\'t Be Empty'
+  //                       )),
+  //
+  //                 SizedBox(
+  //                   height: 20,
+  //                 ),
+  //                 Padding(
+  //                   padding: const EdgeInsets.symmetric(horizontal: 20),
+  //                   child: TextField(
+  //                     obscureText: true,
+  //                     decoration: InputDecoration(
+  //                       prefixIcon: Icon(Icons.lock_open),
+  //                       filled: true,
+  //                       fillColor:  Colors.grey[200],
+  //                       //isDense: true,
+  //                       labelText: 'password',
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 SizedBox(
+  //                   height: 15,
+  //                 ),
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.center,
+  //                   children: [
+  //                     Text("Forgot password?",
+  //                         style: TextStyle(
+  //                           fontSize: 13,
+  //                           color: Colors.grey,
+  //                         )),
+  //                   ],
+  //                 ),
+  //                 SizedBox(
+  //                   height: 30,
+  //                 ),
+  //                 Padding(
+  //                   padding: const EdgeInsets.symmetric(horizontal: 20),
+  //                   child: Container(
+  //                     height: 40,
+  //                     decoration: BoxDecoration(color: Colors.red.shade700),
+  //                     child: TextButton(
+  //                       onPressed: () {
+  //                         setState(() {
+  //                         });
+  //                         print("click");
+  //                       },
+  //                       child: Padding(
+  //                         padding: const EdgeInsets.symmetric(vertical: 4),
+  //                         child: Row(
+  //                           mainAxisAlignment: MainAxisAlignment.center,
+  //                           children: [
+  //                             Text("Login",
+  //                                 style: TextStyle(
+  //                                   fontSize: 14,
+  //                                   color: Colors.white,
+  //                                   fontWeight: FontWeight.bold,
+  //                                 )),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 SizedBox(
+  //                   height: 30,
+  //                 ),
+  //                 Padding(
+  //                   padding: const EdgeInsets.only(right: 20),
+  //                   child: Row(
+  //                     mainAxisAlignment: MainAxisAlignment.center,
+  //                     children: [
+  //                       Text(
+  //                         "Do not have an account? ",
+  //                         style: TextStyle(fontSize: 14, color: Colors.grey),
+  //                       ),
+  //                       GestureDetector(
+  //                           onTap: () {
+  //                             // Navigator.push(
+  //                             //     context,
+  //                             //     PageTransition(
+  //                             //         type: PageTransitionType.fade,
+  //                             //         child: RegistrationPage()));
+  //                           },
+  //                           child: Text("Sign up here. ",
+  //                               style: TextStyle(
+  //                                 fontSize: 14,
+  //                                 color: Colors.indigo,
+  //                               ))),
+  //                     ],
+  //                   ),
+  //                 ),
+  //                 SizedBox(
+  //                   height: 10,
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         );
+  //       });
+  // }
+  //
+  // num totalRequested = 0;
+  //
+  // Future getTotal() async {
+  //   _fetchID();
+  //   print(StId);
+  //   num sum = 0;
+  //   FirebaseFirestore.instance
+  //       .collection('Requests')
+  //       .where('stationID', isEqualTo: "PF001")
+  //       .where('Ordered', isEqualTo: false)
+  //       .where('Status', isEqualTo: "Pending")
+  //       .get()
+  //       .then(
+  //     (querySnapshot) {
+  //       for (var result in querySnapshot.docs) {
+  //         sum = sum + int.parse(result.data()['requested amount']);
+  //         setState(() {
+  //           totalRequested = sum;
+  //         });
+  //       }
+  //       print('total : $totalRequested');
+  //     },
+  //   );
+  // }
+
   @override
   void initState() {
+    //getTotal();
     _fetchID();
     super.initState();
   }
@@ -46,9 +207,9 @@ class _RequestsState extends State<Requests> {
           StId = ds.data()!['StationID'];
           StName = ds.data()!['StationName'];
         });
-        print(Name);
-        print(StId);
-        print(StName);
+        // print(Name);
+        // print(StId);
+        // print(StName);
       }).catchError((e) {});
     } else {
       Name = '';
@@ -188,76 +349,84 @@ class _RequestsState extends State<Requests> {
               //   ],
               // ),
               //let's set the filter section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Customer Requests",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28.0,
-                    ),
-                  ),
-                  Row(
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: 300.0,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: "Type Order Number",
-                            prefixIcon: Icon(Icons.search),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black26,
+                      Text(
+                        "Customer Requests",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 28.0,
+                        ),
+                      ),
+                      SizedBox(width: 520,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            width: 300.0,
+                            child: const TextField(
+                              decoration: InputDecoration(
+                                isDense: true,
+                                hintText: "Type Order Number",
+                                prefixIcon: Icon(Icons.search),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.black26,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          // SizedBox(
+                          //   width: 40.0,
+                          // ),
+                          // DropdownButton(
+                          //     hint: Text("Filter by"),
+                          //     items: [
+                          //       DropdownMenuItem(
+                          //         value: "Date",
+                          //         child: Text("Date"),
+                          //       ),
+                          //       DropdownMenuItem(
+                          //         value: "Reviews",
+                          //         child: Text("Reviews"),
+                          //       ),
+                          //       DropdownMenuItem(
+                          //         value: "Branches",
+                          //         child: Text("Branches"),
+                          //       ),
+                          //     ],
+                          //     onChanged: (value) {}),
+                          // SizedBox(
+                          //   width: 20.0,
+                          // ),
+                          // DropdownButton(
+                          //     hint: Text("Order by"),
+                          //     items: [
+                          //       DropdownMenuItem(
+                          //         value: "Date",
+                          //         child: Text("Date"),
+                          //       ),
+                          //       DropdownMenuItem(
+                          //         value: "Reviews",
+                          //         child: Text("Reviews"),
+                          //       ),
+                          //       DropdownMenuItem(
+                          //         value: "Branches",
+                          //         child: Text("Branches"),
+                          //       ),
+                          //     ],
+                          //     onChanged: (value) {}),
+                        ],
                       ),
-                      SizedBox(
-                        width: 40.0,
-                      ),
-                      DropdownButton(
-                          hint: Text("Filter by"),
-                          items: [
-                            DropdownMenuItem(
-                              value: "Date",
-                              child: Text("Date"),
-                            ),
-                            DropdownMenuItem(
-                              value: "Reviews",
-                              child: Text("Reviews"),
-                            ),
-                            DropdownMenuItem(
-                              value: "Branches",
-                              child: Text("Branches"),
-                            ),
-                          ],
-                          onChanged: (value) {}),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      DropdownButton(
-                          hint: Text("Order by"),
-                          items: [
-                            DropdownMenuItem(
-                              value: "Date",
-                              child: Text("Date"),
-                            ),
-                            DropdownMenuItem(
-                              value: "Reviews",
-                              child: Text("Reviews"),
-                            ),
-                            DropdownMenuItem(
-                              value: "Branches",
-                              child: Text("Branches"),
-                            ),
-                          ],
-                          onChanged: (value) {}),
                     ],
                   ),
-                ],
+                ),
               ),
               SizedBox(
                 height: 40.0,
@@ -276,11 +445,9 @@ class _RequestsState extends State<Requests> {
                       if (snapshot.hasError) {
                         return const Text('Something went wrong');
                       }
-
-                      // if (snapshot.connectionState == ConnectionState.waiting) {
-                      //   return const Text("Loading");
-                      // }
-
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: const Text("Loading"));
+                      }
                       if (snapshot.hasData) {
                         //print(snapshot.data!.docs);
                         List<DataCell> displayedDataCell = [];
@@ -336,8 +503,8 @@ class _RequestsState extends State<Requests> {
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('fuelType')
-                                //item['customerName'].toString(),
-                              ),
+                                  //item['customerName'].toString(),
+                                  ),
                             ),
                           );
                           displayedDataCell.add(
@@ -486,10 +653,10 @@ class _RequestsState extends State<Requests> {
                                                             .inHours
                                                             .toString());
                                               }, onConfirm: (date) {
-                                                var dateFormat = DateFormat(
-                                                    'MM/dd/yyyy');
+                                                var dateFormat =
+                                                    DateFormat('MM/dd/yyyy');
                                                 var ResceduledDate =
-                                                dateFormat.format(date);
+                                                    dateFormat.format(date);
                                                 print(ResceduledDate);
 
                                                 /// update request
@@ -500,7 +667,7 @@ class _RequestsState extends State<Requests> {
                                                     .update({
                                                   'Status': 'Cancelled',
                                                   "Rescheduled Date":
-                                                "$ResceduledDate",
+                                                      "$ResceduledDate",
                                                 });
 
                                                 /// update user
@@ -512,11 +679,11 @@ class _RequestsState extends State<Requests> {
                                                   "Requested": "No",
                                                   "requested amount": "null",
                                                   "Rescheduled Date":
-                                                  "$ResceduledDate",
+                                                      "$ResceduledDate",
                                                 });
                                                 setState(() {
                                                   ResceduleDate =
-                                                  "$ResceduledDate";
+                                                      "$ResceduledDate";
                                                 });
 
                                                 _fetchTokenCancelled(
@@ -569,70 +736,76 @@ class _RequestsState extends State<Requests> {
                           );
                         }
 
-                        return DataTable(
-                          headingRowColor: MaterialStateProperty.resolveWith(
-                              (states) => Colors.grey.shade200),
-                          columns: const <DataColumn>[
-                            DataColumn(
-                              label: Text(
-                                'Token',
-                              ),
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: DataTable(
+                              headingRowColor: MaterialStateProperty.resolveWith(
+                                  (states) => Colors.grey.shade200),
+                              columns: const <DataColumn>[
+                                DataColumn(
+                                  label: Text(
+                                    'Token',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Vehicle number',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Customer Name',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Request Date',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Fuel type',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Quantity',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Status',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Action',
+                                  ),
+                                ),
+                              ],
+                              rows: <DataRow>[
+                                for (int i = 0;
+                                    i < displayedDataCell.length;
+                                    i += 8)
+                                  DataRow(
+                                      // onSelectChanged: (value) {
+                                      //   //print();
+                                      // },
+                                      cells: [
+                                        displayedDataCell[i],
+                                        displayedDataCell[i + 1],
+                                        displayedDataCell[i + 2],
+                                        displayedDataCell[i + 3],
+                                        displayedDataCell[i + 4],
+                                        displayedDataCell[i + 5],
+                                        displayedDataCell[i + 6],
+                                        displayedDataCell[i + 7],
+                                      ])
+                              ],
                             ),
-                            DataColumn(
-                              label: Text(
-                                'Vehicle number',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Customer Name',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Request Date',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Fuel type',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Quantity',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Status',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Action',
-                              ),
-                            ),
-                          ],
-                          rows: <DataRow>[
-                            for (int i = 0;
-                                i < displayedDataCell.length;
-                                i += 8)
-                              DataRow(
-                                  // onSelectChanged: (value) {
-                                  //   //print();
-                                  // },
-                                  cells: [
-                                    displayedDataCell[i],
-                                    displayedDataCell[i + 1],
-                                    displayedDataCell[i + 2],
-                                    displayedDataCell[i + 3],
-                                    displayedDataCell[i + 4],
-                                    displayedDataCell[i + 5],
-                                    displayedDataCell[i + 6],
-                                    displayedDataCell[i + 7],
-                                  ])
-                          ],
+                          ),
                         );
                       }
                       return Center(child: const CircularProgressIndicator());
