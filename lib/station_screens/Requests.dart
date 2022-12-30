@@ -363,7 +363,7 @@ class _RequestsState extends State<Requests> {
                           fontSize: 28.0,
                         ),
                       ),
-                      SizedBox(width: 520,),
+                      SizedBox(width: 500,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -570,8 +570,14 @@ class _RequestsState extends State<Requests> {
                                               }, onConfirm: (date) {
                                                 print('confirm $date');
 
+                                                var startFormat = DateFormat(
+                                                    'MM/dd/yyyy');
+                                                var Date =
+                                                startFormat.format(date);
+                                                print(Date);
+
                                                 var dateFormat = DateFormat(
-                                                    'MM/dd/yyyy hh:mm a');
+                                                    'HH:mm');
                                                 var startDate =
                                                     dateFormat.format(date);
                                                 print(startDate);
@@ -580,7 +586,7 @@ class _RequestsState extends State<Requests> {
                                                     const Duration(hours: 3));
 
                                                 var endFormat =
-                                                    DateFormat('hh:mm a');
+                                                    DateFormat('HH:mm');
                                                 var endDate =
                                                     endFormat.format(eDate);
                                                 print(endDate);
@@ -596,6 +602,9 @@ class _RequestsState extends State<Requests> {
                                                       randomNumber.toString(),
                                                   "DateAndTime":
                                                       "$startDate - $endDate",
+                                                  "TokenDate":
+                                                  "$Date",
+
                                                 });
 
                                                 /// update user
@@ -608,6 +617,8 @@ class _RequestsState extends State<Requests> {
                                                       randomNumber.toString(),
                                                   "DateAndTime":
                                                       "$startDate - $endDate",
+                                                  "TokenDate":
+                                                  "$Date",
                                                 });
 
                                                 setState(() {
