@@ -17,8 +17,10 @@ class Requests extends StatefulWidget {
 }
 
 class _RequestsState extends State<Requests> {
+
   @override
   void initState() {
+    //getTotal();
     _fetchID();
     super.initState();
   }
@@ -46,9 +48,9 @@ class _RequestsState extends State<Requests> {
           StId = ds.data()!['StationID'];
           StName = ds.data()!['StationName'];
         });
-        print(Name);
-        print(StId);
-        print(StName);
+        // print(Name);
+        // print(StId);
+        // print(StName);
       }).catchError((e) {});
     } else {
       Name = '';
@@ -81,7 +83,7 @@ class _RequestsState extends State<Requests> {
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization':
-              'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
+          'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
         },
         body: jsonEncode(
           <String, dynamic>{
@@ -95,7 +97,7 @@ class _RequestsState extends State<Requests> {
             'notification': <String, dynamic>{
               'title': "Your fuel request accepted",
               'body':
-                  "Token Number: " + Token + "\nScheduled time: " + dateAndTime,
+              "Token Number: " + Token + "\nScheduled time: " + dateAndTime,
               'android_channel_id': "channel"
             },
             'to': DeviceToken,
@@ -132,7 +134,7 @@ class _RequestsState extends State<Requests> {
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization':
-              'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
+          'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
         },
         body: jsonEncode(
           <String, dynamic>{
@@ -188,76 +190,84 @@ class _RequestsState extends State<Requests> {
               //   ],
               // ),
               //let's set the filter section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Customer Requests",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28.0,
-                    ),
-                  ),
-                  Row(
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: 300.0,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText: "Type Order Number",
-                            prefixIcon: Icon(Icons.search),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black26,
+                      Text(
+                        "Customer Requests",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 28.0,
+                        ),
+                      ),
+                      SizedBox(width: 500,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            width: 300.0,
+                            child: const TextField(
+                              decoration: InputDecoration(
+                                isDense: true,
+                                hintText: "Type Order Number",
+                                prefixIcon: Icon(Icons.search),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.black26,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          // SizedBox(
+                          //   width: 40.0,
+                          // ),
+                          // DropdownButton(
+                          //     hint: Text("Filter by"),
+                          //     items: [
+                          //       DropdownMenuItem(
+                          //         value: "Date",
+                          //         child: Text("Date"),
+                          //       ),
+                          //       DropdownMenuItem(
+                          //         value: "Reviews",
+                          //         child: Text("Reviews"),
+                          //       ),
+                          //       DropdownMenuItem(
+                          //         value: "Branches",
+                          //         child: Text("Branches"),
+                          //       ),
+                          //     ],
+                          //     onChanged: (value) {}),
+                          // SizedBox(
+                          //   width: 20.0,
+                          // ),
+                          // DropdownButton(
+                          //     hint: Text("Order by"),
+                          //     items: [
+                          //       DropdownMenuItem(
+                          //         value: "Date",
+                          //         child: Text("Date"),
+                          //       ),
+                          //       DropdownMenuItem(
+                          //         value: "Reviews",
+                          //         child: Text("Reviews"),
+                          //       ),
+                          //       DropdownMenuItem(
+                          //         value: "Branches",
+                          //         child: Text("Branches"),
+                          //       ),
+                          //     ],
+                          //     onChanged: (value) {}),
+                        ],
                       ),
-                      SizedBox(
-                        width: 40.0,
-                      ),
-                      DropdownButton(
-                          hint: Text("Filter by"),
-                          items: [
-                            DropdownMenuItem(
-                              value: "Date",
-                              child: Text("Date"),
-                            ),
-                            DropdownMenuItem(
-                              value: "Reviews",
-                              child: Text("Reviews"),
-                            ),
-                            DropdownMenuItem(
-                              value: "Branches",
-                              child: Text("Branches"),
-                            ),
-                          ],
-                          onChanged: (value) {}),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      DropdownButton(
-                          hint: Text("Order by"),
-                          items: [
-                            DropdownMenuItem(
-                              value: "Date",
-                              child: Text("Date"),
-                            ),
-                            DropdownMenuItem(
-                              value: "Reviews",
-                              child: Text("Reviews"),
-                            ),
-                            DropdownMenuItem(
-                              value: "Branches",
-                              child: Text("Branches"),
-                            ),
-                          ],
-                          onChanged: (value) {}),
                     ],
                   ),
-                ],
+                ),
               ),
               SizedBox(
                 height: 40.0,
@@ -276,11 +286,9 @@ class _RequestsState extends State<Requests> {
                       if (snapshot.hasError) {
                         return const Text('Something went wrong');
                       }
-
-                      // if (snapshot.connectionState == ConnectionState.waiting) {
-                      //   return const Text("Loading");
-                      // }
-
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: const Text("Loading"));
+                      }
                       if (snapshot.hasData) {
                         //print(snapshot.data!.docs);
                         List<DataCell> displayedDataCell = [];
@@ -306,31 +314,31 @@ class _RequestsState extends State<Requests> {
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('Token')
-                                  //item['Token'].toString(),
-                                  ),
+                                //item['Token'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('Vehicle number')
 
-                                  //item['Vehicle number'].toString(),
-                                  ),
+                                //item['Vehicle number'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('customerName')
 
-                                  //item['customerName'].toString(),
-                                  ),
+                                //item['customerName'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('Requested time')
-                                  //item['customerName'].toString(),
-                                  ),
+                                //item['customerName'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
@@ -344,8 +352,8 @@ class _RequestsState extends State<Requests> {
                             DataCell(
                               Text(
                                   snapshot.data!.docs[i].get('requested amount')
-                                  //  item['requested amount'].toString(),
-                                  ),
+                                //  item['requested amount'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(DataCell(
@@ -356,283 +364,300 @@ class _RequestsState extends State<Requests> {
                                   color: canceled
                                       ? Colors.red
                                       : pending
-                                          ? Colors.grey
-                                          : accepted
-                                              ? Colors.green
-                                              : Colors.black
+                                      ? Colors.grey
+                                      : accepted
+                                      ? Colors.green
+                                      : Colors.black
 
-                                  //  item['Status'].toString(), style: TextStyle(fontWeight: FontWeight.bold, color: accepted ? Colors.green : Colors.red),
-                                  ),
+                                //  item['Status'].toString(), style: TextStyle(fontWeight: FontWeight.bold, color: accepted ? Colors.green : Colors.red),
+                              ),
                             ),
                           ));
                           displayedDataCell.add(
                             DataCell(
                               pending
                                   ? Row(
-                                      children: [
-                                        TextButton(
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        Colors.green)),
-                                            onPressed: () {
-                                              /// Generate token
-                                              Random random = new Random();
-                                              int randomNumber =
-                                                  random.nextInt(999999) +
-                                                      100000;
+                                children: [
+                                  TextButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.green)),
+                                      onPressed: () {
+                                        /// Generate token
+                                        Random random = new Random();
+                                        int randomNumber =
+                                            random.nextInt(999999) +
+                                                100000;
 
-                                              id = snapshot.data!.docs[i]
-                                                  .get('customerId');
+                                        id = snapshot.data!.docs[i]
+                                            .get('customerId');
 
-                                              print("customerId: " + id);
+                                        print("customerId: " + id);
 
-                                              /// DatePicker
-                                              DatePicker.showDateTimePicker(
-                                                  context,
-                                                  showTitleActions: true,
-                                                  minTime: DateTime.now(),
-                                                  maxTime: DateTime.now().add(
-                                                      const Duration(days: 7)),
-                                                  onChanged: (date) {
-                                                print(
-                                                    'change $date in time zone ' +
-                                                        date.timeZoneOffset
-                                                            .inHours
-                                                            .toString());
-                                              }, onConfirm: (date) {
-                                                print('confirm $date');
+                                        /// DatePicker
+                                        DatePicker.showDateTimePicker(
+                                            context,
+                                            showTitleActions: true,
+                                            minTime: DateTime.now(),
+                                            maxTime: DateTime.now().add(
+                                                const Duration(days: 7)),
+                                            onChanged: (date) {
+                                              print(
+                                                  'change $date in time zone ' +
+                                                      date.timeZoneOffset
+                                                          .inHours
+                                                          .toString());
+                                            }, onConfirm: (date) {
+                                          print('confirm $date');
 
-                                                var dateFormat = DateFormat(
-                                                    'MM/dd/yyyy hh:mm a');
-                                                var startDate =
-                                                    dateFormat.format(date);
-                                                print(startDate);
+                                          var startFormat = DateFormat(
+                                              'MM/dd/yyyy');
+                                          var Date =
+                                          startFormat.format(date);
+                                          print(Date);
 
-                                                var eDate = date.add(
-                                                    const Duration(hours: 3));
+                                          var dateFormat = DateFormat(
+                                              'HH:mm');
+                                          var startDate =
+                                          dateFormat.format(date);
+                                          print(startDate);
 
-                                                var endFormat =
-                                                    DateFormat('hh:mm a');
-                                                var endDate =
-                                                    endFormat.format(eDate);
-                                                print(endDate);
+                                          var eDate = date.add(
+                                              const Duration(hours: 3));
 
-                                                /// update request
-                                                FirebaseFirestore.instance
-                                                    .collection('Requests')
-                                                    .doc((snapshot.data!.docs[i]
-                                                        .get('id')))
-                                                    .update({
-                                                  'Status': 'Accepted',
-                                                  "Token":
-                                                      randomNumber.toString(),
-                                                  "DateAndTime":
-                                                      "$startDate - $endDate",
-                                                });
+                                          var endFormat =
+                                          DateFormat('HH:mm');
+                                          var endDate =
+                                          endFormat.format(eDate);
+                                          print(endDate);
 
-                                                /// update user
-                                                FirebaseFirestore.instance
-                                                    .collection('User')
-                                                    .doc((snapshot.data!.docs[i]
-                                                        .get('customerId')))
-                                                    .update({
-                                                  "Token":
-                                                      randomNumber.toString(),
-                                                  "DateAndTime":
-                                                      "$startDate - $endDate",
-                                                });
+                                          /// update request
+                                          FirebaseFirestore.instance
+                                              .collection('Requests')
+                                              .doc((snapshot.data!.docs[i]
+                                              .get('id')))
+                                              .update({
+                                            'Status': 'Accepted',
+                                            "Token":
+                                            randomNumber.toString(),
+                                            "DateAndTime":
+                                            "$startDate - $endDate",
+                                            "TokenDate":
+                                            "$Date",
 
-                                                setState(() {
-                                                  DateAndTime =
-                                                      "$startDate - $endDate";
-                                                });
+                                          });
 
-                                                _fetchToken(
-                                                    id, Token, DateAndTime);
-                                              }, currentTime: DateTime.now());
+                                          /// update user
+                                          FirebaseFirestore.instance
+                                              .collection('User')
+                                              .doc((snapshot.data!.docs[i]
+                                              .get('customerId')))
+                                              .update({
+                                            "Token":
+                                            randomNumber.toString(),
+                                            "DateAndTime":
+                                            "$startDate - $endDate",
+                                            "TokenDate":
+                                            "$Date",
+                                          });
 
-                                              setState(() {
-                                                Token = randomNumber.toString();
-                                              });
-                                            },
-                                            child: Text(
-                                              "Accept",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            )),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        TextButton(
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        Colors.red)),
-                                            onPressed: () {
-                                              id = snapshot.data!.docs[i]
-                                                  .get('customerId');
+                                          setState(() {
+                                            DateAndTime =
+                                            "$startDate - $endDate";
+                                          });
 
-                                              DatePicker.showDateTimePicker(
-                                                  context,
-                                                  showTitleActions: true,
-                                                  minTime: DateTime.now(),
-                                                  maxTime: DateTime.now().add(
-                                                      const Duration(days: 7)),
-                                                  onChanged: (date) {
-                                                print(
-                                                    'change $date in time zone ' +
-                                                        date.timeZoneOffset
-                                                            .inHours
-                                                            .toString());
-                                              }, onConfirm: (date) {
-                                                var dateFormat = DateFormat(
-                                                    'MM/dd/yyyy');
-                                                var ResceduledDate =
-                                                dateFormat.format(date);
-                                                print(ResceduledDate);
+                                          _fetchToken(
+                                              id, Token, DateAndTime);
+                                        }, currentTime: DateTime.now());
 
-                                                /// update request
-                                                FirebaseFirestore.instance
-                                                    .collection('Requests')
-                                                    .doc((snapshot.data!.docs[i]
-                                                        .get('id')))
-                                                    .update({
-                                                  'Status': 'Cancelled',
-                                                  "Rescheduled Date":
-                                                "$ResceduledDate",
-                                                });
+                                        setState(() {
+                                          Token = randomNumber.toString();
+                                        });
+                                      },
+                                      child: Text(
+                                        "Accept",
+                                        style: TextStyle(
+                                            color: Colors.white),
+                                      )),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  TextButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.red)),
+                                      onPressed: () {
+                                        id = snapshot.data!.docs[i]
+                                            .get('customerId');
 
-                                                /// update user
-                                                FirebaseFirestore.instance
-                                                    .collection('User')
-                                                    .doc((snapshot.data!.docs[i]
-                                                        .get('customerId')))
-                                                    .update({
-                                                  "Requested": "No",
-                                                  "requested amount": "null",
-                                                  "Rescheduled Date":
-                                                  "$ResceduledDate",
-                                                });
-                                                setState(() {
-                                                  ResceduleDate =
-                                                  "$ResceduledDate";
-                                                });
+                                        DatePicker.showDateTimePicker(
+                                            context,
+                                            showTitleActions: true,
+                                            minTime: DateTime.now(),
+                                            maxTime: DateTime.now().add(
+                                                const Duration(days: 7)),
+                                            onChanged: (date) {
+                                              print(
+                                                  'change $date in time zone ' +
+                                                      date.timeZoneOffset
+                                                          .inHours
+                                                          .toString());
+                                            }, onConfirm: (date) {
+                                          var dateFormat =
+                                          DateFormat('MM/dd/yyyy');
+                                          var ResceduledDate =
+                                          dateFormat.format(date);
+                                          print(ResceduledDate);
 
-                                                _fetchTokenCancelled(
-                                                    id, ResceduleDate);
-                                              }, currentTime: DateTime.now());
-                                            },
-                                            child: Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ))
-                                      ],
-                                    )
+                                          /// update request
+                                          FirebaseFirestore.instance
+                                              .collection('Requests')
+                                              .doc((snapshot.data!.docs[i]
+                                              .get('id')))
+                                              .update({
+                                            'Status': 'Cancelled',
+                                            "Rescheduled Date":
+                                            "$ResceduledDate",
+                                          });
+
+                                          /// update user
+                                          FirebaseFirestore.instance
+                                              .collection('User')
+                                              .doc((snapshot.data!.docs[i]
+                                              .get('customerId')))
+                                              .update({
+                                            "Requested": "No",
+                                            "requested amount": "null",
+                                            "Rescheduled Date":
+                                            "$ResceduledDate",
+                                          });
+                                          setState(() {
+                                            ResceduleDate =
+                                            "$ResceduledDate";
+                                          });
+
+                                          _fetchTokenCancelled(
+                                              id, ResceduleDate);
+                                        }, currentTime: DateTime.now());
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                            color: Colors.white),
+                                      ))
+                                ],
+                              )
                                   : canceled
-                                      ? TextButton(
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Colors.red)),
-                                          onPressed: () {},
-                                          child: Text(
-                                            "Cancelled",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ))
-                                      : accepted
-                                          ? TextButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          Colors.green)),
-                                              onPressed: () {},
-                                              child: Text(
-                                                "Accepted",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ))
-                                          : TextButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          Colors.black)),
-                                              onPressed: () {},
-                                              child: Text(
-                                                "Completed",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )),
+                                  ? TextButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(
+                                          Colors.red)),
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Cancelled",
+                                    style:
+                                    TextStyle(color: Colors.white),
+                                  ))
+                                  : accepted
+                                  ? TextButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(
+                                          Colors.green)),
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Accepted",
+                                    style: TextStyle(
+                                        color: Colors.white),
+                                  ))
+                                  : TextButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(
+                                          Colors.black)),
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Completed",
+                                    style: TextStyle(
+                                        color: Colors.white),
+                                  )),
                             ),
                           );
                         }
 
-                        return DataTable(
-                          headingRowColor: MaterialStateProperty.resolveWith(
-                              (states) => Colors.grey.shade200),
-                          columns: const <DataColumn>[
-                            DataColumn(
-                              label: Text(
-                                'Token',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Vehicle number',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Customer Name',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Request Date',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Fuel type',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Quantity',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Status',
-                              ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Action',
-                              ),
-                            ),
-                          ],
-                          rows: <DataRow>[
-                            for (int i = 0;
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: DataTable(
+                              headingRowColor: MaterialStateProperty.resolveWith(
+                                      (states) => Colors.grey.shade200),
+                              columns: const <DataColumn>[
+                                DataColumn(
+                                  label: Text(
+                                    'Token',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Vehicle number',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Customer Name',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Request Date',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Fuel type',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Quantity',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Status',
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    'Action',
+                                  ),
+                                ),
+                              ],
+                              rows: <DataRow>[
+                                for (int i = 0;
                                 i < displayedDataCell.length;
                                 i += 8)
-                              DataRow(
-                                  // onSelectChanged: (value) {
-                                  //   //print();
-                                  // },
-                                  cells: [
-                                    displayedDataCell[i],
-                                    displayedDataCell[i + 1],
-                                    displayedDataCell[i + 2],
-                                    displayedDataCell[i + 3],
-                                    displayedDataCell[i + 4],
-                                    displayedDataCell[i + 5],
-                                    displayedDataCell[i + 6],
-                                    displayedDataCell[i + 7],
-                                  ])
-                          ],
+                                  DataRow(
+                                    // onSelectChanged: (value) {
+                                    //   //print();
+                                    // },
+                                      cells: [
+                                        displayedDataCell[i],
+                                        displayedDataCell[i + 1],
+                                        displayedDataCell[i + 2],
+                                        displayedDataCell[i + 3],
+                                        displayedDataCell[i + 4],
+                                        displayedDataCell[i + 5],
+                                        displayedDataCell[i + 6],
+                                        displayedDataCell[i + 7],
+                                      ])
+                              ],
+                            ),
+                          ),
                         );
                       }
                       return Center(child: const CircularProgressIndicator());
@@ -647,3 +672,4 @@ class _RequestsState extends State<Requests> {
     );
   }
 }
+
