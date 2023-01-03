@@ -76,7 +76,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     return Container(
       decoration: BoxDecoration(
           gradient:
-              LinearGradient(colors: [Colors.orange, Colors.red.shade700])),
+          LinearGradient(colors: [Colors.orange, Colors.red.shade700])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
@@ -126,7 +126,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: TextField(
-                        //enabled: quota ? true : false,
+                      //enabled: quota ? true : false,
                         controller: _stationIDController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.local_gas_station),
@@ -136,7 +136,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           labelText: 'station ID',
                           border: InputBorder.none,
                           errorText:
-                              _validateSId ? 'Station ID Can\'t Be Empty' : null,
+                          _validateSId ? 'Station ID Can\'t Be Empty' : null,
                         )),
                   ),
                   SizedBox(
@@ -145,7 +145,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: TextField(
-                        //enabled: quota ? true : false,
+                      //enabled: quota ? true : false,
                         controller: _usernameController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.person_outline),
@@ -155,7 +155,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           labelText: 'username',
                           border: InputBorder.none,
                           errorText:
-                              _validateUN ? 'Username Can\'t Be Empty' : null,
+                          _validateUN ? 'Username Can\'t Be Empty' : null,
                         )),
                   ),
                   SizedBox(
@@ -164,7 +164,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: TextField(
-                        //enabled: quota ? true : false,
+                      //enabled: quota ? true : false,
                         controller: _emailController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.mail_outline),
@@ -174,7 +174,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           labelText: 'email',
                           border: InputBorder.none,
                           errorText:
-                              _validateEmail ? 'Email Can\'t Be Empty' : null,
+                          _validateEmail ? 'Email Can\'t Be Empty' : null,
                         )),
                   ),
                   SizedBox(
@@ -193,7 +193,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         labelText: 'password',
                         border: InputBorder.none,
                         errorText:
-                            _validatePW ? 'Password Can\'t Be Empty' : null,
+                        _validatePW ? 'Password Can\'t Be Empty' : null,
                       ),
                     ),
                   ),
@@ -305,3 +305,4 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 }
+

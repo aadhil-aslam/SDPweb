@@ -195,38 +195,38 @@ class _OrderStatusState extends State<OrderStatus> {
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('id')
-                                  //item['Token'].toString(),
-                                  ),
+                                //item['Token'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('Order date')
 
-                                  //item['Vehicle number'].toString(),
-                                  ),
+                                //item['Vehicle number'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('Fuel type')
 
-                                  //item['customerName'].toString(),
-                                  ),
+                                //item['customerName'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('Fuel amount')
-                                  //item['customerName'].toString(),
-                                  ),
+                                //item['customerName'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('Cost')
-                                  //item['customerName'].toString(),
-                                  ),
+                                //item['customerName'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(DataCell(
@@ -237,19 +237,19 @@ class _OrderStatusState extends State<OrderStatus> {
                                   color: canceled
                                       ? Colors.red
                                       : pending
-                                          ? Colors.grey
-                                          : accepted
-                                              ? Colors.green
-                                              : Colors.black
-                                  //  item['Status'].toString(), style: TextStyle(fontWeight: FontWeight.bold, color: accepted ? Colors.green : Colors.red),
-                                  ),
+                                      ? Colors.grey
+                                      : accepted
+                                      ? Colors.green
+                                      : Colors.black
+                                //  item['Status'].toString(), style: TextStyle(fontWeight: FontWeight.bold, color: accepted ? Colors.green : Colors.red),
+                              ),
                             ),
                           ));
                         }
 
                         return DataTable(
                           headingRowColor:
-                              MaterialStateProperty.resolveWith(
+                          MaterialStateProperty.resolveWith(
                                   (states) => Colors.grey.shade200),
                           columns: const <DataColumn>[
                             DataColumn(label: Text("Order Number")),
@@ -261,12 +261,12 @@ class _OrderStatusState extends State<OrderStatus> {
                           ],
                           rows: <DataRow>[
                             for (int i = 0;
-                                i < displayedDataCell.length;
-                                i += 6)
+                            i < displayedDataCell.length;
+                            i += 6)
                               DataRow(
-                                  // onSelectChanged: (value) {
-                                  //   //print();
-                                  // },
+                                // onSelectChanged: (value) {
+                                //   //print();
+                                // },
                                   cells: [
                                     displayedDataCell[i],
                                     displayedDataCell[i + 1],
@@ -290,3 +290,4 @@ class _OrderStatusState extends State<OrderStatus> {
     );
   }
 }
+

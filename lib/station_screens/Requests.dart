@@ -18,165 +18,6 @@ class Requests extends StatefulWidget {
 
 class _RequestsState extends State<Requests> {
 
-  // sendRequest() {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (parm) {
-  //         return Container(
-  //           color: Colors.transparent,
-  //           child: Container(
-  //             decoration: BoxDecoration(
-  //                 color: Colors.white,
-  //                 borderRadius: BorderRadius.circular(8),
-  //                 boxShadow: [
-  //                   BoxShadow(
-  //                       color: Colors.grey,
-  //                       offset: Offset(0, 3),
-  //                       blurRadius: 24)
-  //                 ]),
-  //             height: 430,
-  //             width: 350,
-  //             child: Column(
-  //               mainAxisAlignment: MainAxisAlignment.center,
-  //               children: [
-  //                 SizedBox(
-  //                   height: 30,
-  //                 ),
-  //                 Text(
-  //                   "LOGIN",
-  //                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-  //                 ),
-  //                 SizedBox(
-  //                   height: 30,
-  //                 ),
-  //                 Padding(
-  //                   padding: const EdgeInsets.symmetric(horizontal: 20),
-  //                   child: Text('Email Can\'t Be Empty'
-  //                       )),
-  //
-  //                 SizedBox(
-  //                   height: 20,
-  //                 ),
-  //                 Padding(
-  //                   padding: const EdgeInsets.symmetric(horizontal: 20),
-  //                   child: TextField(
-  //                     obscureText: true,
-  //                     decoration: InputDecoration(
-  //                       prefixIcon: Icon(Icons.lock_open),
-  //                       filled: true,
-  //                       fillColor:  Colors.grey[200],
-  //                       //isDense: true,
-  //                       labelText: 'password',
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 SizedBox(
-  //                   height: 15,
-  //                 ),
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.center,
-  //                   children: [
-  //                     Text("Forgot password?",
-  //                         style: TextStyle(
-  //                           fontSize: 13,
-  //                           color: Colors.grey,
-  //                         )),
-  //                   ],
-  //                 ),
-  //                 SizedBox(
-  //                   height: 30,
-  //                 ),
-  //                 Padding(
-  //                   padding: const EdgeInsets.symmetric(horizontal: 20),
-  //                   child: Container(
-  //                     height: 40,
-  //                     decoration: BoxDecoration(color: Colors.red.shade700),
-  //                     child: TextButton(
-  //                       onPressed: () {
-  //                         setState(() {
-  //                         });
-  //                         print("click");
-  //                       },
-  //                       child: Padding(
-  //                         padding: const EdgeInsets.symmetric(vertical: 4),
-  //                         child: Row(
-  //                           mainAxisAlignment: MainAxisAlignment.center,
-  //                           children: [
-  //                             Text("Login",
-  //                                 style: TextStyle(
-  //                                   fontSize: 14,
-  //                                   color: Colors.white,
-  //                                   fontWeight: FontWeight.bold,
-  //                                 )),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 SizedBox(
-  //                   height: 30,
-  //                 ),
-  //                 Padding(
-  //                   padding: const EdgeInsets.only(right: 20),
-  //                   child: Row(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Text(
-  //                         "Do not have an account? ",
-  //                         style: TextStyle(fontSize: 14, color: Colors.grey),
-  //                       ),
-  //                       GestureDetector(
-  //                           onTap: () {
-  //                             // Navigator.push(
-  //                             //     context,
-  //                             //     PageTransition(
-  //                             //         type: PageTransitionType.fade,
-  //                             //         child: RegistrationPage()));
-  //                           },
-  //                           child: Text("Sign up here. ",
-  //                               style: TextStyle(
-  //                                 fontSize: 14,
-  //                                 color: Colors.indigo,
-  //                               ))),
-  //                     ],
-  //                   ),
-  //                 ),
-  //                 SizedBox(
-  //                   height: 10,
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       });
-  // }
-  //
-  // num totalRequested = 0;
-  //
-  // Future getTotal() async {
-  //   _fetchID();
-  //   print(StId);
-  //   num sum = 0;
-  //   FirebaseFirestore.instance
-  //       .collection('Requests')
-  //       .where('stationID', isEqualTo: "PF001")
-  //       .where('Ordered', isEqualTo: false)
-  //       .where('Status', isEqualTo: "Pending")
-  //       .get()
-  //       .then(
-  //     (querySnapshot) {
-  //       for (var result in querySnapshot.docs) {
-  //         sum = sum + int.parse(result.data()['requested amount']);
-  //         setState(() {
-  //           totalRequested = sum;
-  //         });
-  //       }
-  //       print('total : $totalRequested');
-  //     },
-  //   );
-  // }
-
   @override
   void initState() {
     //getTotal();
@@ -242,7 +83,7 @@ class _RequestsState extends State<Requests> {
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization':
-              'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
+          'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
         },
         body: jsonEncode(
           <String, dynamic>{
@@ -256,7 +97,7 @@ class _RequestsState extends State<Requests> {
             'notification': <String, dynamic>{
               'title': "Your fuel request accepted",
               'body':
-                  "Token Number: " + Token + "\nScheduled time: " + dateAndTime,
+              "Token Number: " + Token + "\nScheduled time: " + dateAndTime,
               'android_channel_id': "channel"
             },
             'to': DeviceToken,
@@ -293,7 +134,7 @@ class _RequestsState extends State<Requests> {
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization':
-              'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
+          'key=AAAAMjTO-YI:APA91bGSDjI9Dm4F6s_oCDbgerFLoYiVIajHnJxy_JU9N27KdaeGrlepOWOjeRNuzDdTpb8VulMZYODYfukOloSEQJsbhpSn9cEg_65DbAYTYEEJlzELwIW6sOKalgxc6bUKAtSavUL7',
         },
         body: jsonEncode(
           <String, dynamic>{
@@ -473,46 +314,46 @@ class _RequestsState extends State<Requests> {
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('Token')
-                                  //item['Token'].toString(),
-                                  ),
+                                //item['Token'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('Vehicle number')
 
-                                  //item['Vehicle number'].toString(),
-                                  ),
+                                //item['Vehicle number'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('customerName')
 
-                                  //item['customerName'].toString(),
-                                  ),
+                                //item['customerName'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('Requested time')
-                                  //item['customerName'].toString(),
-                                  ),
+                                //item['customerName'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(snapshot.data!.docs[i].get('fuelType')
-                                  //item['customerName'].toString(),
-                                  ),
+                                //item['customerName'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(
                             DataCell(
                               Text(
                                   snapshot.data!.docs[i].get('requested amount')
-                                  //  item['requested amount'].toString(),
-                                  ),
+                                //  item['requested amount'].toString(),
+                              ),
                             ),
                           );
                           displayedDataCell.add(DataCell(
@@ -523,226 +364,226 @@ class _RequestsState extends State<Requests> {
                                   color: canceled
                                       ? Colors.red
                                       : pending
-                                          ? Colors.grey
-                                          : accepted
-                                              ? Colors.green
-                                              : Colors.black
+                                      ? Colors.grey
+                                      : accepted
+                                      ? Colors.green
+                                      : Colors.black
 
-                                  //  item['Status'].toString(), style: TextStyle(fontWeight: FontWeight.bold, color: accepted ? Colors.green : Colors.red),
-                                  ),
+                                //  item['Status'].toString(), style: TextStyle(fontWeight: FontWeight.bold, color: accepted ? Colors.green : Colors.red),
+                              ),
                             ),
                           ));
                           displayedDataCell.add(
                             DataCell(
                               pending
                                   ? Row(
-                                      children: [
-                                        TextButton(
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        Colors.green)),
-                                            onPressed: () {
-                                              /// Generate token
-                                              Random random = new Random();
-                                              int randomNumber =
-                                                  random.nextInt(999999) +
-                                                      100000;
+                                children: [
+                                  TextButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.green)),
+                                      onPressed: () {
+                                        /// Generate token
+                                        Random random = new Random();
+                                        int randomNumber =
+                                            random.nextInt(999999) +
+                                                100000;
 
-                                              id = snapshot.data!.docs[i]
-                                                  .get('customerId');
+                                        id = snapshot.data!.docs[i]
+                                            .get('customerId');
 
-                                              print("customerId: " + id);
+                                        print("customerId: " + id);
 
-                                              /// DatePicker
-                                              DatePicker.showDateTimePicker(
-                                                  context,
-                                                  showTitleActions: true,
-                                                  minTime: DateTime.now(),
-                                                  maxTime: DateTime.now().add(
-                                                      const Duration(days: 7)),
-                                                  onChanged: (date) {
-                                                print(
-                                                    'change $date in time zone ' +
-                                                        date.timeZoneOffset
-                                                            .inHours
-                                                            .toString());
-                                              }, onConfirm: (date) {
-                                                print('confirm $date');
+                                        /// DatePicker
+                                        DatePicker.showDateTimePicker(
+                                            context,
+                                            showTitleActions: true,
+                                            minTime: DateTime.now(),
+                                            maxTime: DateTime.now().add(
+                                                const Duration(days: 7)),
+                                            onChanged: (date) {
+                                              print(
+                                                  'change $date in time zone ' +
+                                                      date.timeZoneOffset
+                                                          .inHours
+                                                          .toString());
+                                            }, onConfirm: (date) {
+                                          print('confirm $date');
 
-                                                var startFormat = DateFormat(
-                                                    'MM/dd/yyyy');
-                                                var Date =
-                                                startFormat.format(date);
-                                                print(Date);
+                                          var startFormat = DateFormat(
+                                              'MM/dd/yyyy');
+                                          var Date =
+                                          startFormat.format(date);
+                                          print(Date);
 
-                                                var dateFormat = DateFormat(
-                                                    'HH:mm');
-                                                var startDate =
-                                                    dateFormat.format(date);
-                                                print(startDate);
+                                          var dateFormat = DateFormat(
+                                              'HH:mm');
+                                          var startDate =
+                                          dateFormat.format(date);
+                                          print(startDate);
 
-                                                var eDate = date.add(
-                                                    const Duration(hours: 3));
+                                          var eDate = date.add(
+                                              const Duration(hours: 3));
 
-                                                var endFormat =
-                                                    DateFormat('HH:mm');
-                                                var endDate =
-                                                    endFormat.format(eDate);
-                                                print(endDate);
+                                          var endFormat =
+                                          DateFormat('HH:mm');
+                                          var endDate =
+                                          endFormat.format(eDate);
+                                          print(endDate);
 
-                                                /// update request
-                                                FirebaseFirestore.instance
-                                                    .collection('Requests')
-                                                    .doc((snapshot.data!.docs[i]
-                                                        .get('id')))
-                                                    .update({
-                                                  'Status': 'Accepted',
-                                                  "Token":
-                                                      randomNumber.toString(),
-                                                  "DateAndTime":
-                                                      "$startDate - $endDate",
-                                                  "TokenDate":
-                                                  "$Date",
+                                          /// update request
+                                          FirebaseFirestore.instance
+                                              .collection('Requests')
+                                              .doc((snapshot.data!.docs[i]
+                                              .get('id')))
+                                              .update({
+                                            'Status': 'Accepted',
+                                            "Token":
+                                            randomNumber.toString(),
+                                            "DateAndTime":
+                                            "$startDate - $endDate",
+                                            "TokenDate":
+                                            "$Date",
 
-                                                });
+                                          });
 
-                                                /// update user
-                                                FirebaseFirestore.instance
-                                                    .collection('User')
-                                                    .doc((snapshot.data!.docs[i]
-                                                        .get('customerId')))
-                                                    .update({
-                                                  "Token":
-                                                      randomNumber.toString(),
-                                                  "DateAndTime":
-                                                      "$startDate - $endDate",
-                                                  "TokenDate":
-                                                  "$Date",
-                                                });
+                                          /// update user
+                                          FirebaseFirestore.instance
+                                              .collection('User')
+                                              .doc((snapshot.data!.docs[i]
+                                              .get('customerId')))
+                                              .update({
+                                            "Token":
+                                            randomNumber.toString(),
+                                            "DateAndTime":
+                                            "$startDate - $endDate",
+                                            "TokenDate":
+                                            "$Date",
+                                          });
 
-                                                setState(() {
-                                                  DateAndTime =
-                                                      "$startDate - $endDate";
-                                                });
+                                          setState(() {
+                                            DateAndTime =
+                                            "$startDate - $endDate";
+                                          });
 
-                                                _fetchToken(
-                                                    id, Token, DateAndTime);
-                                              }, currentTime: DateTime.now());
+                                          _fetchToken(
+                                              id, Token, DateAndTime);
+                                        }, currentTime: DateTime.now());
 
-                                              setState(() {
-                                                Token = randomNumber.toString();
-                                              });
-                                            },
-                                            child: Text(
-                                              "Accept",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            )),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        TextButton(
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        Colors.red)),
-                                            onPressed: () {
-                                              id = snapshot.data!.docs[i]
-                                                  .get('customerId');
+                                        setState(() {
+                                          Token = randomNumber.toString();
+                                        });
+                                      },
+                                      child: Text(
+                                        "Accept",
+                                        style: TextStyle(
+                                            color: Colors.white),
+                                      )),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  TextButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.red)),
+                                      onPressed: () {
+                                        id = snapshot.data!.docs[i]
+                                            .get('customerId');
 
-                                              DatePicker.showDateTimePicker(
-                                                  context,
-                                                  showTitleActions: true,
-                                                  minTime: DateTime.now(),
-                                                  maxTime: DateTime.now().add(
-                                                      const Duration(days: 7)),
-                                                  onChanged: (date) {
-                                                print(
-                                                    'change $date in time zone ' +
-                                                        date.timeZoneOffset
-                                                            .inHours
-                                                            .toString());
-                                              }, onConfirm: (date) {
-                                                var dateFormat =
-                                                    DateFormat('MM/dd/yyyy');
-                                                var ResceduledDate =
-                                                    dateFormat.format(date);
-                                                print(ResceduledDate);
+                                        DatePicker.showDateTimePicker(
+                                            context,
+                                            showTitleActions: true,
+                                            minTime: DateTime.now(),
+                                            maxTime: DateTime.now().add(
+                                                const Duration(days: 7)),
+                                            onChanged: (date) {
+                                              print(
+                                                  'change $date in time zone ' +
+                                                      date.timeZoneOffset
+                                                          .inHours
+                                                          .toString());
+                                            }, onConfirm: (date) {
+                                          var dateFormat =
+                                          DateFormat('MM/dd/yyyy');
+                                          var ResceduledDate =
+                                          dateFormat.format(date);
+                                          print(ResceduledDate);
 
-                                                /// update request
-                                                FirebaseFirestore.instance
-                                                    .collection('Requests')
-                                                    .doc((snapshot.data!.docs[i]
-                                                        .get('id')))
-                                                    .update({
-                                                  'Status': 'Cancelled',
-                                                  "Rescheduled Date":
-                                                      "$ResceduledDate",
-                                                });
+                                          /// update request
+                                          FirebaseFirestore.instance
+                                              .collection('Requests')
+                                              .doc((snapshot.data!.docs[i]
+                                              .get('id')))
+                                              .update({
+                                            'Status': 'Cancelled',
+                                            "Rescheduled Date":
+                                            "$ResceduledDate",
+                                          });
 
-                                                /// update user
-                                                FirebaseFirestore.instance
-                                                    .collection('User')
-                                                    .doc((snapshot.data!.docs[i]
-                                                        .get('customerId')))
-                                                    .update({
-                                                  "Requested": "No",
-                                                  "requested amount": "null",
-                                                  "Rescheduled Date":
-                                                      "$ResceduledDate",
-                                                });
-                                                setState(() {
-                                                  ResceduleDate =
-                                                      "$ResceduledDate";
-                                                });
+                                          /// update user
+                                          FirebaseFirestore.instance
+                                              .collection('User')
+                                              .doc((snapshot.data!.docs[i]
+                                              .get('customerId')))
+                                              .update({
+                                            "Requested": "No",
+                                            "requested amount": "null",
+                                            "Rescheduled Date":
+                                            "$ResceduledDate",
+                                          });
+                                          setState(() {
+                                            ResceduleDate =
+                                            "$ResceduledDate";
+                                          });
 
-                                                _fetchTokenCancelled(
-                                                    id, ResceduleDate);
-                                              }, currentTime: DateTime.now());
-                                            },
-                                            child: Text(
-                                              "Cancel",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ))
-                                      ],
-                                    )
+                                          _fetchTokenCancelled(
+                                              id, ResceduleDate);
+                                        }, currentTime: DateTime.now());
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                            color: Colors.white),
+                                      ))
+                                ],
+                              )
                                   : canceled
-                                      ? TextButton(
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Colors.red)),
-                                          onPressed: () {},
-                                          child: Text(
-                                            "Cancelled",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ))
-                                      : accepted
-                                          ? TextButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          Colors.green)),
-                                              onPressed: () {},
-                                              child: Text(
-                                                "Accepted",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ))
-                                          : TextButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          Colors.black)),
-                                              onPressed: () {},
-                                              child: Text(
-                                                "Completed",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )),
+                                  ? TextButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(
+                                          Colors.red)),
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Cancelled",
+                                    style:
+                                    TextStyle(color: Colors.white),
+                                  ))
+                                  : accepted
+                                  ? TextButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(
+                                          Colors.green)),
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Accepted",
+                                    style: TextStyle(
+                                        color: Colors.white),
+                                  ))
+                                  : TextButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(
+                                          Colors.black)),
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Completed",
+                                    style: TextStyle(
+                                        color: Colors.white),
+                                  )),
                             ),
                           );
                         }
@@ -753,7 +594,7 @@ class _RequestsState extends State<Requests> {
                             scrollDirection: Axis.vertical,
                             child: DataTable(
                               headingRowColor: MaterialStateProperty.resolveWith(
-                                  (states) => Colors.grey.shade200),
+                                      (states) => Colors.grey.shade200),
                               columns: const <DataColumn>[
                                 DataColumn(
                                   label: Text(
@@ -798,12 +639,12 @@ class _RequestsState extends State<Requests> {
                               ],
                               rows: <DataRow>[
                                 for (int i = 0;
-                                    i < displayedDataCell.length;
-                                    i += 8)
+                                i < displayedDataCell.length;
+                                i += 8)
                                   DataRow(
-                                      // onSelectChanged: (value) {
-                                      //   //print();
-                                      // },
+                                    // onSelectChanged: (value) {
+                                    //   //print();
+                                    // },
                                       cells: [
                                         displayedDataCell[i],
                                         displayedDataCell[i + 1],
@@ -831,3 +672,4 @@ class _RequestsState extends State<Requests> {
     );
   }
 }
+

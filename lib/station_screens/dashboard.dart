@@ -22,7 +22,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   sendRequest() {
     return showDialog(
-      barrierDismissible: false,
+        barrierDismissible: false,
         context: context,
         builder: (parm) {
           return Center(
@@ -41,8 +41,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 height: 250,
                 width: 300,
                 child:
-                    //dieselLoaded & petrolLoaded & idLoaded ?
-                    Padding(
+                //dieselLoaded & petrolLoaded & idLoaded ?
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -123,9 +123,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                               if (totalPetrol != 0) {
                                 DocumentReference docRef =
-                                    await FirebaseFirestore.instance
-                                        .collection("Station Orders")
-                                        .add({
+                                await FirebaseFirestore.instance
+                                    .collection("Station Orders")
+                                    .add({
                                   "Order date": now,
                                   "Status": "Pending",
                                   "Fuel amount": totalPetrol.toString(),
@@ -146,9 +146,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                               if (totalDiesel != 0) {
                                 DocumentReference docRef =
-                                    await FirebaseFirestore.instance
-                                        .collection("Station Orders")
-                                        .add({
+                                await FirebaseFirestore.instance
+                                    .collection("Station Orders")
+                                    .add({
                                   "Order date": now,
                                   "Status": "Pending",
                                   "Fuel amount": totalDiesel.toString(),
@@ -240,7 +240,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         .where('fuelType', isEqualTo: "Petrol")
         .get()
         .then(
-      (querySnapshot) {
+          (querySnapshot) {
         for (var result in querySnapshot.docs) {
           sum = sum + int.parse(result.data()['requested amount']);
           setState(() {
@@ -265,7 +265,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         .where('fuelType', isEqualTo: "Diesel")
         .get()
         .then(
-      (querySnapshot) {
+          (querySnapshot) {
         for (var result in querySnapshot.docs) {
           sum = sum + int.parse(result.data()['requested amount']);
           setState(() {
@@ -404,7 +404,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   extended: isExpanded,
                   backgroundColor: Color(0xff333951),
                   unselectedIconTheme:
-                      IconThemeData(color: Colors.white, opacity: 1),
+                  IconThemeData(color: Colors.white, opacity: 1),
                   unselectedLabelTextStyle: TextStyle(
                     color: Colors.white54,
                   ),
@@ -475,227 +475,227 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           _selectedIndex == 0
               ? Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //let's add the navigation menu for this project
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // IconButton(
-                              //   onPressed: () {
-                              //     //let's trigger the navigation expansion
-                              //     setState(() {
-                              //       isExpanded = !isExpanded;
-                              //     });
-                              //   },
-                              //   icon: Icon(Icons.menu),
-                              // ),
-                              StreamBuilder<
-                                  DocumentSnapshot<Map<String, dynamic>>>(
-                                //key: Key(_uid),
-                                stream: FirebaseFirestore.instance
-                                    .collection('StationUser')
-                                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                                    .snapshots(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    //String username = snapshot.data?.data()?['username'];
-                                    //print(snapshot.data?.data()?['Token Number']);
-                                    return Text(
-                                        snapshot.data?.data()?['StationName'],
-                                        style: TextStyle(
-                                            fontSize: 28,
-                                            fontWeight: FontWeight.w600));
-                                  }
-                                  return Text("Welcome",
-                                      style: TextStyle(
-                                          fontSize: 28,
-                                          fontWeight: FontWeight.w600));
-                                },
-                              ),
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    "https://faces-img.xcdn.link/image-lorem-face-3430.jpg"),
-                                radius: 26.0,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Flexible(
-                                  child: Card(
-                                      child: Padding(
-                                padding: const EdgeInsets.all(18.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.article,
-                                          size: 26.0,
-                                        ),
-                                        SizedBox(
-                                          width: 15.0,
-                                        ),
-                                        Text(
-                                          "Total requests",
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20.0,
-                                    ),
-                                    Text(
-                                      "View Details",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              ))),
-                              Flexible(
-                                  child: Card(
-                                      child: Padding(
-                                padding: const EdgeInsets.all(18.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.article,
-                                          size: 26.0,
-                                        ),
-                                        SizedBox(
-                                          width: 15.0,
-                                        ),
-                                        Text(
-                                          "New Fuel Order",
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20.0,
-                                    ),
-                                    Text(
-                                      "View Details",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              ))),
-                              Flexible(
-                                  child: Card(
-                                      child: Padding(
-                                padding: const EdgeInsets.all(18.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.article,
-                                          size: 26.0,
-                                        ),
-                                        SizedBox(
-                                          width: 15.0,
-                                        ),
-                                        Text(
-                                          "Confirmed Order",
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20.0,
-                                    ),
-                                    Text(
-                                      "View Details",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              ))),
-                              Flexible(
-                                  child: Card(
-                                      child: Padding(
-                                padding: const EdgeInsets.all(18.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.article,
-                                          size: 26.0,
-                                        ),
-                                        SizedBox(
-                                          width: 15.0,
-                                        ),
-                                        Text(
-                                          "Cancelled Order",
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20.0,
-                                    ),
-                                    Text(
-                                      "View Details",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              ))),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                        ],
-                      ),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //let's add the navigation menu for this project
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // IconButton(
+                        //   onPressed: () {
+                        //     //let's trigger the navigation expansion
+                        //     setState(() {
+                        //       isExpanded = !isExpanded;
+                        //     });
+                        //   },
+                        //   icon: Icon(Icons.menu),
+                        // ),
+                        StreamBuilder<
+                            DocumentSnapshot<Map<String, dynamic>>>(
+                          //key: Key(_uid),
+                          stream: FirebaseFirestore.instance
+                              .collection('StationUser')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              //String username = snapshot.data?.data()?['username'];
+                              //print(snapshot.data?.data()?['Token Number']);
+                              return Text(
+                                  snapshot.data?.data()?['StationName'],
+                                  style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w600));
+                            }
+                            return Text("Welcome",
+                                style: TextStyle(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.w600));
+                          },
+                        ),
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              "https://faces-img.xcdn.link/image-lorem-face-3430.jpg"),
+                          radius: 26.0,
+                        ),
+                      ],
                     ),
-                  ),
-                )
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Flexible(
+                            child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.article,
+                                            size: 26.0,
+                                          ),
+                                          SizedBox(
+                                            width: 15.0,
+                                          ),
+                                          Text(
+                                            "Total requests",
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      Text(
+                                        "View Details",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ))),
+                        Flexible(
+                            child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.article,
+                                            size: 26.0,
+                                          ),
+                                          SizedBox(
+                                            width: 15.0,
+                                          ),
+                                          Text(
+                                            "New Fuel Order",
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      Text(
+                                        "View Details",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ))),
+                        Flexible(
+                            child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.article,
+                                            size: 26.0,
+                                          ),
+                                          SizedBox(
+                                            width: 15.0,
+                                          ),
+                                          Text(
+                                            "Confirmed Order",
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      Text(
+                                        "View Details",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ))),
+                        Flexible(
+                            child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.article,
+                                            size: 26.0,
+                                          ),
+                                          SizedBox(
+                                            width: 15.0,
+                                          ),
+                                          Text(
+                                            "Cancelled Order",
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20.0,
+                                      ),
+                                      Text(
+                                        "View Details",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ))),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30.0,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
               : _selectedIndex == 1
-                  ? OrderStatus()
-                  : _selectedIndex == 2
-                      ? Requests()
-                      : _selectedIndex == 3
-                          ? RequestAction()
-                          : SizedBox.shrink(),
+              ? OrderStatus()
+              : _selectedIndex == 2
+              ? Requests()
+              : _selectedIndex == 3
+              ? RequestAction()
+              : SizedBox.shrink(),
         ],
       ),
       //let's add the floating action button
@@ -712,3 +712,4 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 }
+
