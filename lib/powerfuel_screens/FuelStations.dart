@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -119,47 +120,94 @@ class _FuelStationsState extends State<FuelStations> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  DataTable(
-                      headingRowColor:
-                      MaterialStateProperty.resolveWith(
-                              (states) => Colors.grey.shade200),
-                      columns: const [
-                        DataColumn(label: Text("ID")),
-                        DataColumn(label: Text("City")),
-                        DataColumn(label: Text("Name")),
-                        DataColumn(label: Text("Address")),
-                        DataColumn(label: Text("Create date")),
-                      ],
-                      rows: [
-                        DataRow(cells: [
-                          DataCell(Text("1")),
-                          DataCell(Text("Colombo")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("Colombo , 10")),
-                          DataCell(Text("LKR 100/=")),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text("2")),
-                          DataCell(Text("Kandy")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("Kandy , 10")),
-                          DataCell(Text("LKR 100/=")),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text("3")),
-                          DataCell(Text("Polanaruwa")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("Polanaruwa , 10")),
-                          DataCell(Text("LKR 100/=")),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text("4")),
-                          DataCell(Text("Anuradhapuram")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("Anuradhapura , 10")),
-                          DataCell(Text("LKR 100/=")),
-                        ]),
-                      ]),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('StationUser')
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: const Text("Loading"));
+                      }
+                      if (snapshot.hasData) {
+                        //print(snapshot.data!.docs);
+                        List<DataCell> displayedDataCell = [];
+
+                        //for (var item in snapshot.data!.docs)
+                        for (int i = 0; i < snapshot.data!.docs.length; i++) {
+
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('StationID')
+                                //item['Token'].toStringΩ
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('StationName')
+                                //item['Vehicle number'].toString(),
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('StationAddress')
+                                //item['Token'].toString(),
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('username')
+                                //item['customerName'].toString(),
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('email')
+                                //item['customerName'].toString(),
+                              ),
+                            ),
+                          );
+                        }
+
+                        return DataTable(
+                          headingRowColor:
+                          MaterialStateProperty.resolveWith(
+                                  (states) => Colors.grey.shade200),
+                          columns: const <DataColumn>[
+                            DataColumn(label: Text("Station ID")),
+                            DataColumn(label: Text("Station Name")),
+                            DataColumn(label: Text("Station Address")),
+                            DataColumn(label: Text("User Name")),
+                            DataColumn(label: Text("Email")),
+                          ],
+                          rows: <DataRow>[
+                            for (int i = 0;
+                            i < displayedDataCell.length;
+                            i += 5)
+                              DataRow(
+                                // onSelectChanged: (value) {
+                                //   //print();
+                                // },
+                                  cells: [
+                                    displayedDataCell[i],
+                                    displayedDataCell[i + 1],
+                                    displayedDataCell[i + 2],
+                                    displayedDataCell[i + 3],
+                                    displayedDataCell[i + 4],
+                                  ])
+                          ],
+                        );
+                      }
+                      return Center(child: const CircularProgressIndicator());
+                    },
+                  ),
                   //Now let's set the pagination
                   SizedBox(
                     height: 40.0,

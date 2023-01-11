@@ -5,21 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:web/station_screens/auth.dart';
 
-import 'Login.dart';
+import '../Login.dart';
 
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({Key? key}) : super(key: key);
+
+class AddUser extends StatefulWidget {
+  const AddUser({Key? key}) : super(key: key);
 
   @override
-  State<RegistrationPage> createState() => _RegistrationPageState();
+  State<AddUser> createState() => _AddUserState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class _AddUserState extends State<AddUser> {
   bool _validateEmail = false;
   bool _validatePW = false;
   bool _validateUN = false;
   bool _validateSId = false;
   bool _validateStName = false;
+  bool _validateStAdd = false;
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -47,6 +49,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final _stationNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _addressController = TextEditingController();
 
   Future<void> createUserWithEmailAndPassword() async {
     try {
@@ -60,9 +63,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
         "email": _emailController.text,
         "StationID": _stationIDController.text,
         "StationName": _stationNameController.text,
+        "StationAddress": _addressController.text,
       });
-      Navigator.push(context,
-          PageTransition(type: PageTransitionType.fade, child: LoginPage()));
     } on FirebaseAuthException catch (e) {
       setState(() {
         _showSuccessSnackbar(e.toString());
@@ -75,30 +77,31 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          gradient:
-          LinearGradient(colors: [Colors.orange, Colors.red.shade700])),
+        color: Colors.black54
+          // gradient:
+          // LinearGradient(colors: [Colors.orange, Colors.red.shade700])
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
-          child: Container(
-            color: Colors.red,
             child: Container(
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0, 3),
-                        blurRadius: 24)
-                  ]),
-              height: 650,
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //       color: Colors.grey,
+                  //       offset: Offset(0, 3),
+                  //       blurRadius: 24)
+                  // ]
+              ),
+              height: 680,
               width: 400,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Register",
+                    "Add Station",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
@@ -137,6 +140,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           border: InputBorder.none,
                           errorText:
                           _validateSId ? 'Station ID Can\'t Be Empty' : null,
+                        )),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: TextField(
+                      //enabled: quota ? true : false,
+                        controller: _addressController,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.home),
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          //isDense: true,
+                          labelText: 'Address',
+                          border: InputBorder.none,
+                          errorText:
+                          _validateStAdd ? 'Address ID Can\'t Be Empty' : null,
                         )),
                   ),
                   SizedBox(
@@ -253,6 +275,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               _stationNameController.text.isEmpty
                                   ? _validateStName = true
                                   : _validateStName = false;
+                              _addressController.text.isEmpty
+                                  ? _validateStAdd = true
+                                  : _validateStAdd = false;
 
                             });
                             if (_validatePW == false &&
@@ -263,46 +288,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               createUserWithEmailAndPassword();
                             }
                           },
-                          child: const Text('Sign up')),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Already have an account? ",
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey,
-                            )),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.fade,
-                                    child: LoginPage()));
-                          },
-                          child: Text("Sign in here.. ",
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.indigo,
-                              )),
-                        ),
-                      ],
+                          child: const Text('Save')),
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-        ),
+
       ),
-    );
+    ));
   }
 }
+
+
 

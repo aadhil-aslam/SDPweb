@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -119,84 +120,226 @@ class _FuelStationRequestState extends State<FuelStationRequest> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  DataTable(
-                      headingRowColor:
-                      MaterialStateProperty.resolveWith(
-                              (states) => Colors.grey.shade200),
-                      columns: const [
-                        DataColumn(label: Text("Fuel Station")),
-                        DataColumn(label: Text("Quantity")),
-                        DataColumn(label: Text("Fuel Type")),
-                        DataColumn(label: Text("Request Date")),
-                        DataColumn(label: Text("Total Cost")),
-                        DataColumn(label: Text("Status")),
-                      ],
-                      rows: [
-                        DataRow(cells: [
-                          DataCell(Text("Colombo")),
-                          DataCell(Text("150000l")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("10th july 2022")),
-                          DataCell(Text("LKR 500000/=")),
-                          DataCell(TextButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all(Colors.red)),
-                              onPressed: () {},
-                              child: Text(
-                                "Pending",
-                                style: TextStyle(color: Colors.white),
-                              ))),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text("Kandy")),
-                          DataCell(Text("25000l")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("11th Auguest 2022")),
-                          DataCell(Text("LKR 100,000/=")),
-                          DataCell(TextButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all(Colors.green)),
-                              onPressed: () {},
-                              child: Text(
-                                "Accepted",
-                                style: TextStyle(color: Colors.white),
-                              ))),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text("Polanaruwa")),
-                          DataCell(Text("5000l")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("10th September 2022")),
-                          DataCell(Text("LKR 15000/=")),
-                          DataCell(TextButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all(Colors.red)),
-                              onPressed: () {},
-                              child: Text(
-                                "Pending",
-                                style: TextStyle(color: Colors.white),
-                              ))),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text("Anuradhapura")),
-                          DataCell(Text("8000l")),
-                          DataCell(Text("Petrol")),
-                          DataCell(Text("19th September 2022")),
-                          DataCell(Text("LKR 10000/=")),
-                          DataCell(TextButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all(Colors.green)),
-                              onPressed: () {},
-                              child: Text(
-                                "Accepted",
-                                style: TextStyle(color: Colors.white),
-                              ))),
-                        ]),
-                      ]),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('Station Orders')
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: const Text("Loading"));
+                      }
+                      if (snapshot.hasData) {
+                        //print(snapshot.data!.docs);
+                        List<DataCell> displayedDataCell = [];
+
+                        //for (var item in snapshot.data!.docs)
+                        for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                          bool pending =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Pending";
+
+                          bool accepted =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Accepted";
+
+                          bool canceled =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Cancelled";
+
+                          bool completed =
+                              snapshot.data!.docs[i].get('Status').toString() ==
+                                  "Completed";
+
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('id')
+                                //item['Token'].toString(),
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('Station Name')
+                                //item['Token'].toString(),
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('Order date')
+
+                                //item['Vehicle number'].toString(),
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('Fuel type')
+
+                                //item['customerName'].toString(),
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('Fuel amount')
+                                //item['customerName'].toString(),
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              Text(snapshot.data!.docs[i].get('Cost')
+                                //item['customerName'].toString(),
+                              ),
+                            ),
+                          );
+                          displayedDataCell.add(
+                            DataCell(
+                              pending
+                                  ? Row(
+                                children: [
+                                  TextButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.green)),
+                                      onPressed: () {
+                                          /// update request
+                                          FirebaseFirestore.instance
+                                              .collection('Station Orders')
+                                              .doc((snapshot.data!.docs[i]
+                                              .get('id')))
+                                              .update({
+                                            'Status': 'Accepted',
+                                          });
+                                      },
+                                      child: Text(
+                                        "Accept",
+                                        style: TextStyle(
+                                            color: Colors.white),
+                                      )),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  TextButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.red)),
+                                      onPressed: () {
+
+                                        /// update request
+                                        FirebaseFirestore.instance
+                                            .collection('Station Orders')
+                                            .doc((snapshot.data!.docs[i]
+                                            .get('id')))
+                                            .update({
+                                          'Status': 'Cancelled',
+                                        });
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                            color: Colors.white),
+                                      ))
+                                ],
+                              )
+                                  : canceled
+                                  ? TextButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(
+                                          Colors.red)),
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Cancelled",
+                                    style:
+                                    TextStyle(color: Colors.white),
+                                  ))
+                                  : accepted
+                                  ? TextButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(
+                                          Colors.green)),
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Accepted",
+                                    style: TextStyle(
+                                        color: Colors.white),
+                                  ))
+                                  : TextButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty.all(
+                                          Colors.black)),
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Completed",
+                                    style: TextStyle(
+                                        color: Colors.white),
+                                  )),
+                            ),
+                          );
+                          // displayedDataCell.add(DataCell(
+                          //   Text(
+                          //     snapshot.data!.docs[i].get('Status'),
+                          //     style: TextStyle(
+                          //         fontWeight: FontWeight.bold,
+                          //         color: canceled
+                          //             ? Colors.red
+                          //             : pending
+                          //             ? Colors.grey
+                          //             : accepted
+                          //             ? Colors.green
+                          //             : Colors.black
+                          //       //  item['Status'].toString(), style: TextStyle(fontWeight: FontWeight.bold, color: accepted ? Colors.green : Colors.red),
+                          //     ),
+                          //   ),
+                          // ));
+                        }
+
+                        return DataTable(
+                          headingRowColor:
+                          MaterialStateProperty.resolveWith(
+                                  (states) => Colors.grey.shade200),
+                          columns: const <DataColumn>[
+                            DataColumn(label: Text("Request Id")),
+                            DataColumn(label: Text("Station Name")),
+                            DataColumn(label: Text("Request date")),
+                            DataColumn(label: Text("Type of Fuel")),
+                            DataColumn(label: Text("Quantity")),
+                            DataColumn(label: Text("Total cost")),
+                            DataColumn(label: Text("Action")),
+                          ],
+                          rows: <DataRow>[
+                            for (int i = 0;
+                            i < displayedDataCell.length;
+                            i += 7)
+                              DataRow(
+                                // onSelectChanged: (value) {
+                                //   //print();
+                                // },
+                                  cells: [
+                                    displayedDataCell[i],
+                                    displayedDataCell[i + 1],
+                                    displayedDataCell[i + 2],
+                                    displayedDataCell[i + 3],
+                                    displayedDataCell[i + 4],
+                                    displayedDataCell[i + 5],
+                                    displayedDataCell[i + 6],
+                                  ])
+                          ],
+                        );
+                      }
+                      return Center(child: const CircularProgressIndicator());
+                    },
+                  ),
                   //Now let's set the pagination
                   SizedBox(
                     height: 40.0,
