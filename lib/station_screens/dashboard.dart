@@ -42,8 +42,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 height: 250,
                 width: 300,
                 child:
-                //dieselLoaded & petrolLoaded & idLoaded ?
-                Padding(
+                    //dieselLoaded & petrolLoaded & idLoaded ?
+                    Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -124,9 +124,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                               if (totalPetrol != 0) {
                                 DocumentReference docRef =
-                                await FirebaseFirestore.instance
-                                    .collection("Station Orders")
-                                    .add({
+                                    await FirebaseFirestore.instance
+                                        .collection("Station Orders")
+                                        .add({
                                   "Order date": now,
                                   "Status": "Pending",
                                   "Fuel amount": totalPetrol.toString(),
@@ -147,9 +147,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                               if (totalDiesel != 0) {
                                 DocumentReference docRef =
-                                await FirebaseFirestore.instance
-                                    .collection("Station Orders")
-                                    .add({
+                                    await FirebaseFirestore.instance
+                                        .collection("Station Orders")
+                                        .add({
                                   "Order date": now,
                                   "Status": "Pending",
                                   "Fuel amount": totalDiesel.toString(),
@@ -241,7 +241,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         .where('fuelType', isEqualTo: "Petrol")
         .get()
         .then(
-          (querySnapshot) {
+      (querySnapshot) {
         for (var result in querySnapshot.docs) {
           sum = sum + int.parse(result.data()['requested amount']);
           setState(() {
@@ -266,7 +266,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         .where('fuelType', isEqualTo: "Diesel")
         .get()
         .then(
-          (querySnapshot) {
+      (querySnapshot) {
         for (var result in querySnapshot.docs) {
           sum = sum + int.parse(result.data()['requested amount']);
           setState(() {
@@ -281,10 +281,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void initState() {
-    _fetchAccepted();
-    _fetchCancelled();
-    _fetchPending();
-    _fetchCompleted();
     _fetchID();
     super.initState();
   }
@@ -306,6 +302,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           StId = ds.data()!['StationID'];
           StName = ds.data()!['StationName'];
         });
+        _fetchAccepted();
+        _fetchCancelled();
+        _fetchPending();
+        _fetchAllReq();
         getTotalPetrol();
         getTotalDiesel();
         // print(Name);
@@ -324,7 +324,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return AlertDialog(
             title: const Text(
               'Do you want to logout?',
-              style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600),
             ),
             actions: [
               TextButton(
@@ -347,8 +350,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Navigator.push(
                         context,
                         PageTransition(
-                            type: PageTransitionType.fade,
-                            child: LoginPage()));
+                            type: PageTransitionType.fade, child: LoginPage()));
                   },
                   child: const Text(
                     'Logout',
@@ -365,7 +367,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   double completed = 0;
 
   _fetchAccepted() async {
-    await  FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('Requests')
         .where('stationID', isEqualTo: StId)
         .where("Status", isEqualTo: "Accepted")
@@ -379,7 +381,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   _fetchCancelled() async {
-    await  FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('Requests')
         .where('stationID', isEqualTo: StId)
         .where("Status", isEqualTo: "Cancelled")
@@ -393,7 +395,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   _fetchPending() async {
-    await  FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('Requests')
         .where('stationID', isEqualTo: StId)
         .where("Status", isEqualTo: "Pending")
@@ -406,11 +408,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }).catchError((e) {});
   }
 
-  _fetchCompleted() async {
-    await  FirebaseFirestore.instance
+  _fetchAllReq() async {
+    await FirebaseFirestore.instance
         .collection('Requests')
         .where('stationID', isEqualTo: StId)
-        .where("Status", isEqualTo: "Completed")
         .get()
         .then((ds) {
       setState(() {
@@ -470,7 +471,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   extended: isExpanded,
                   backgroundColor: Color(0xff333951),
                   unselectedIconTheme:
-                  IconThemeData(color: Colors.white, opacity: 1),
+                      IconThemeData(color: Colors.white, opacity: 1),
                   unselectedLabelTextStyle: TextStyle(
                     color: Colors.white54,
                   ),
@@ -541,341 +542,360 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           _selectedIndex == 0
               ? Expanded(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //let's add the navigation menu for this project
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // IconButton(
-                        //   onPressed: () {
-                        //     //let's trigger the navigation expansion
-                        //     setState(() {
-                        //       isExpanded = !isExpanded;
-                        //     });
-                        //   },
-                        //   icon: Icon(Icons.menu),
-                        // ),
-                        StreamBuilder<
-                            DocumentSnapshot<Map<String, dynamic>>>(
-                          //key: Key(_uid),
-                          stream: FirebaseFirestore.instance
-                              .collection('StationUser')
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              //String username = snapshot.data?.data()?['username'];
-                              //print(snapshot.data?.data()?['Token Number']);
-                              return Text(
-                                  snapshot.data?.data()?['StationName'],
-                                  style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w600));
-                            }
-                            return Text("Welcome",
-                                style: TextStyle(
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.w600));
-                          },
-                        ),
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              "https://faces-img.xcdn.link/image-lorem-face-3430.jpg"),
-                          radius: 26.0,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Flexible(
-                            child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.article,
-                                            size: 26.0,
-                                          ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "Total requests",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Text(
-                                        "View Details",
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(30.0, 60.0, 60.0, 0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //let's add the navigation menu for this project
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // IconButton(
+                              //   onPressed: () {
+                              //     //let's trigger the navigation expansion
+                              //     setState(() {
+                              //       isExpanded = !isExpanded;
+                              //     });
+                              //   },
+                              //   icon: Icon(Icons.menu),
+                              // ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5.0),
+                                child: StreamBuilder<
+                                    DocumentSnapshot<Map<String, dynamic>>>(
+                                  //key: Key(_uid),
+                                  stream: FirebaseFirestore.instance
+                                      .collection('StationUser')
+                                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      //String username = snapshot.data?.data()?['username'];
+                                      //print(snapshot.data?.data()?['Token Number']);
+                                      return Text(
+                                          snapshot.data?.data()?['StationName'],
+                                          style: TextStyle(
+                                              fontSize: 28,
+                                              fontWeight: FontWeight.w600));
+                                    }
+                                    return Text("Welcome",
                                         style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
-                                ))),
-                        Flexible(
-                            child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.article,
-                                            size: 26.0,
-                                          ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "New Fuel Order",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Text(
-                                        "View Details",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
-                                ))),
-                        Flexible(
-                            child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.article,
-                                            size: 26.0,
-                                          ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "Confirmed Order",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Text(
-                                        "View Details",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
-                                ))),
-                        Flexible(
-                            child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.article,
-                                            size: 26.0,
-                                          ),
-                                          SizedBox(
-                                            width: 15.0,
-                                          ),
-                                          Text(
-                                            "Cancelled Order",
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Text(
-                                        "View Details",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
-                                ))),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 300.0,
-                        ),
-                        Expanded(
-                          child: Container(
-                              height: MediaQuery.of(context).size.height / 2,
-                              child: PieChart(
-                                PieChartData(
-                                  borderData: FlBorderData(
-                                    show: false,
-                                  ),
-                                  sectionsSpace: 0,
-                                  centerSpaceRadius: 0,
-                                  sections:
-                                  showingSections(accepted, pending, cancelled, completed),
+                                            fontSize: 28,
+                                            fontWeight: FontWeight.w600));
+                                  },
                                 ),
-                              )),
-                        ),
-                        SizedBox(
-                          width: 200.0,
-                        ),
-                        Expanded(
-                          child: Column(children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Color(0xff0293ee),
-                                    ),
-                                    height: 15,
-                                    width: 15,
-                                  ),
-                                  Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 15.0),
-                                        child: Text("Accepted"),
-                                      )
-                                  )
-                                ],
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Color(0xfff8b250),
-                                    ),
-                                    height: 15,
-                                    width: 15,
-                                  ),
-                                  Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 15.0),
-                                        child: Text("Pending"),
-                                      )
-                                  )
-                                ],
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    "https://faces-img.xcdn.link/image-lorem-face-3430.jpg"),
+                                radius: 26.0,
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Color(0xff845bef),
-                                    ),
-                                    height: 15,
-                                    width: 15,
-                                  ),
-                                  Expanded(
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Flexible(
+                                  child: Card(
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 15.0),
-                                        child: Text("Cancelled"),
-                                      )
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Color(0xff13d38e),
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.article,
+                                          size: 26.0,
+                                        ),
+                                        SizedBox(
+                                          width: 15.0,
+                                        ),
+                                        Text(
+                                          "Total requests",
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                    height: 15,
-                                    width: 15,
-                                  ),
-                                  Expanded(
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "$completed",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ))),
+                              Flexible(
+                                  child: Card(
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 15.0),
-                                        child: Text("Completed"),
-                                      )
-                                  )
-                                ],
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.article,
+                                          size: 26.0,
+                                        ),
+                                        SizedBox(
+                                          width: 15.0,
+                                        ),
+                                        Text(
+                                          "New Fuel Order",
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "$pending",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ))),
+                              Flexible(
+                                  child: Card(
+                                      child: Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.article,
+                                          size: 26.0,
+                                        ),
+                                        SizedBox(
+                                          width: 15.0,
+                                        ),
+                                        Text(
+                                          "Confirmed Order",
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "$accepted",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ))),
+                              Flexible(
+                                  child: Card(
+                                      child: Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.article,
+                                          size: 26.0,
+                                        ),
+                                        SizedBox(
+                                          width: 15.0,
+                                        ),
+                                        Text(
+                                          "Cancelled Order",
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    Text(
+                                      "$cancelled",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ))),
+                            ],
+                          ),
+                          // SizedBox(
+                          //   height: 10.0,
+                          // ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(top: 20.0, left: 5),
+                          //   child: Text('Requests',
+                          //       style: TextStyle(
+                          //           fontSize: 28, fontWeight: FontWeight.w600)),
+                          // ),
+                          SizedBox(
+                            height: 80.0,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 300.0,
                               ),
-                            ),
-                          ],),
-                        ),
-                      ],
+                              Expanded(
+                                child: Container(
+                                    height:
+                                        MediaQuery.of(context).size.height / 2,
+                                    child: PieChart(
+                                      PieChartData(
+                                        borderData: FlBorderData(
+                                          show: false,
+                                        ),
+                                        sectionsSpace: 0,
+                                        centerSpaceRadius: 0,
+                                        sections: showingSections(accepted,
+                                            pending, cancelled, completed),
+                                      ),
+                                    )),
+                              ),
+                              SizedBox(
+                                width: 100.0,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 15.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Color(0xff0293ee),
+                                            ),
+                                            height: 15,
+                                            width: 15,
+                                          ),
+                                          Expanded(
+                                              child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 15.0),
+                                            child: Text("Accepted"),
+                                          ))
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 15.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Color(0xfff8b250),
+                                            ),
+                                            height: 15,
+                                            width: 15,
+                                          ),
+                                          Expanded(
+                                              child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 15.0),
+                                            child: Text("Pending"),
+                                          ))
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 15.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Color(0xff845bef),
+                                            ),
+                                            height: 15,
+                                            width: 15,
+                                          ),
+                                          Expanded(
+                                              child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 15.0),
+                                            child: Text("Cancelled"),
+                                          ))
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 15.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Color(0xff13d38e),
+                                            ),
+                                            height: 15,
+                                            width: 15,
+                                          ),
+                                          Expanded(
+                                              child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 15.0),
+                                            child: Text("Completed"),
+                                          ))
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          )
+                  ),
+                )
               : _selectedIndex == 1
-              ? OrderStatus()
-              : _selectedIndex == 2
-              ? Requests()
-              : _selectedIndex == 3
-              ? RequestAction()
-              : SizedBox.shrink(),
+                  ? OrderStatus()
+                  : _selectedIndex == 2
+                      ? Requests()
+                      : _selectedIndex == 3
+                          ? RequestAction()
+                          : SizedBox.shrink(),
         ],
       ),
       //let's add the floating action button
@@ -891,6 +911,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+
   List<PieChartSectionData> showingSections(
       double accepted, double pending, double cancelled, double completed) {
     return List.generate(4, (i) {
@@ -902,7 +923,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return PieChartSectionData(
             color: const Color(0xff0293ee),
             value: accepted,
-            title: 'Accepted',
+            title: "$accepted%",
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -915,7 +936,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return PieChartSectionData(
             color: const Color(0xfff8b250),
             value: pending,
-            title: 'Pending',
+            title: "$pending%",
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -928,7 +949,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return PieChartSectionData(
             color: const Color(0xff845bef),
             value: cancelled,
-            title: 'Cancelled',
+            title: "$cancelled%",
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -941,7 +962,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           return PieChartSectionData(
             color: const Color(0xff13d38e),
             value: completed,
-            title: 'Completed',
+            title: "$completed%",
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -956,4 +977,3 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 }
-
