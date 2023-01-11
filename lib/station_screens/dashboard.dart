@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
@@ -280,6 +281,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void initState() {
+    _fetchAccepted();
+    _fetchCancelled();
+    _fetchPending();
+    _fetchCompleted();
     _fetchID();
     super.initState();
   }
@@ -352,6 +357,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           );
         });
+  }
+
+  double accepted = 2;
+  double pending = 2;
+  double cancelled = 2;
+  double completed = 0;
+
+  _fetchAccepted() async {
+    await  FirebaseFirestore.instance
+        .collection('Requests')
+        .where('stationID', isEqualTo: StId)
+        .where("Status", isEqualTo: "Accepted")
+        .get()
+        .then((ds) {
+      setState(() {
+        accepted = ds.docs.length as double;
+        print(accepted);
+      });
+    }).catchError((e) {});
+  }
+
+  _fetchCancelled() async {
+    await  FirebaseFirestore.instance
+        .collection('Requests')
+        .where('stationID', isEqualTo: StId)
+        .where("Status", isEqualTo: "Cancelled")
+        .get()
+        .then((ds) {
+      setState(() {
+        cancelled = ds.docs.length as double;
+        print(cancelled);
+      });
+    }).catchError((e) {});
+  }
+
+  _fetchPending() async {
+    await  FirebaseFirestore.instance
+        .collection('Requests')
+        .where('stationID', isEqualTo: StId)
+        .where("Status", isEqualTo: "Pending")
+        .get()
+        .then((ds) {
+      setState(() {
+        pending = ds.docs.length as double;
+        print(pending);
+      });
+    }).catchError((e) {});
+  }
+
+  _fetchCompleted() async {
+    await  FirebaseFirestore.instance
+        .collection('Requests')
+        .where('stationID', isEqualTo: StId)
+        .where("Status", isEqualTo: "Completed")
+        .get()
+        .then((ds) {
+      setState(() {
+        completed = ds.docs.length as double;
+        print(completed);
+      });
+    }).catchError((e) {});
   }
 
   //setting the expansion function for the navigation rail
@@ -684,6 +750,120 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     SizedBox(
                       height: 30.0,
                     ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 300.0,
+                        ),
+                        Expanded(
+                          child: Container(
+                              height: MediaQuery.of(context).size.height / 2,
+                              child: PieChart(
+                                PieChartData(
+                                  borderData: FlBorderData(
+                                    show: false,
+                                  ),
+                                  sectionsSpace: 0,
+                                  centerSpaceRadius: 0,
+                                  sections:
+                                  showingSections(accepted, pending, cancelled, completed),
+                                ),
+                              )),
+                        ),
+                        SizedBox(
+                          width: 200.0,
+                        ),
+                        Expanded(
+                          child: Column(children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Color(0xff0293ee),
+                                    ),
+                                    height: 15,
+                                    width: 15,
+                                  ),
+                                  Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 15.0),
+                                        child: Text("Accepted"),
+                                      )
+                                  )
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Color(0xfff8b250),
+                                    ),
+                                    height: 15,
+                                    width: 15,
+                                  ),
+                                  Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 15.0),
+                                        child: Text("Pending"),
+                                      )
+                                  )
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Color(0xff845bef),
+                                    ),
+                                    height: 15,
+                                    width: 15,
+                                  ),
+                                  Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 15.0),
+                                        child: Text("Cancelled"),
+                                      )
+                                  )
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Color(0xff13d38e),
+                                    ),
+                                    height: 15,
+                                    width: 15,
+                                  ),
+                                  Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 15.0),
+                                        child: Text("Completed"),
+                                      )
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -710,6 +890,70 @@ class _DashboardScreenState extends State<DashboardScreen> {
         backgroundColor: Colors.deepPurple.shade400,
       ),
     );
+  }
+  List<PieChartSectionData> showingSections(
+      double accepted, double pending, double cancelled, double completed) {
+    return List.generate(4, (i) {
+      final fontSize = 16.0;
+      final radius = 200.0;
+
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: const Color(0xff0293ee),
+            value: accepted,
+            title: 'Accepted',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff),
+            ),
+            badgePositionPercentageOffset: .98,
+          );
+        case 1:
+          return PieChartSectionData(
+            color: const Color(0xfff8b250),
+            value: pending,
+            title: 'Pending',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff),
+            ),
+            badgePositionPercentageOffset: .98,
+          );
+        case 2:
+          return PieChartSectionData(
+            color: const Color(0xff845bef),
+            value: cancelled,
+            title: 'Cancelled',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff),
+            ),
+            badgePositionPercentageOffset: .98,
+          );
+        case 3:
+          return PieChartSectionData(
+            color: const Color(0xff13d38e),
+            value: completed,
+            title: 'Completed',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff),
+            ),
+            badgePositionPercentageOffset: .98,
+          );
+        default:
+          throw Exception('Oh no');
+      }
+    });
   }
 }
 
