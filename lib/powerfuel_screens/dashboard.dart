@@ -21,11 +21,60 @@ class PFDashboardScreen extends StatefulWidget {
 
 class _PFDashboardScreenState extends State<PFDashboardScreen> {
 
-  bool _validateEmail = false;
-  bool _validatePW = false;
-  bool _validateUN = false;
-  bool _validateSId = false;
-  bool _validateStName = false;
+  double accepted = 0;
+  double pending = 0;
+  double cancelled = 0;
+  double stations = 0;
+
+  _fetchAccepted() async {
+    await FirebaseFirestore.instance
+        .collection('Station Orders')
+        .where("Status", isEqualTo: "Accepted")
+        .get()
+        .then((ds) {
+      setState(() {
+        accepted = ds.docs.length as double;
+        print(accepted);
+      });
+    }).catchError((e) {});
+  }
+
+  _fetchCancelled() async {
+    await FirebaseFirestore.instance
+        .collection('Station Orders')
+        .where("Status", isEqualTo: "Cancelled")
+        .get()
+        .then((ds) {
+      setState(() {
+        cancelled = ds.docs.length as double;
+        print(cancelled);
+      });
+    }).catchError((e) {});
+  }
+
+  _fetchPending() async {
+    await FirebaseFirestore.instance
+        .collection('Station Orders')
+        .where("Status", isEqualTo: "Pending")
+        .get()
+        .then((ds) {
+      setState(() {
+        pending = ds.docs.length as double;
+        print(pending);
+      });
+    }).catchError((e) {});
+  }
+
+  _fetchStations() async {
+    await FirebaseFirestore.instance
+        .collection('StationUser')
+        .get()
+        .then((ds) {
+      setState(() {
+        stations = ds.docs.length as double;
+      });
+    }).catchError((e) {});
+  }
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -44,212 +93,15 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
     );
   }
 
-  final _usernameController = TextEditingController();
-  final _stationIDController = TextEditingController();
-  final _stationNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  Future<void> createUserWithEmailAndPassword() async {
-    try {
-      await Auth().createUserWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text);
-      FirebaseFirestore.instance
-          .collection("StationUser")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .set({
-        "username": _usernameController.text,
-        "email": _emailController.text,
-        "StationID": _stationIDController.text,
-        "StationName": _stationNameController.text,
-      });
-      Navigator.push(context,
-          PageTransition(type: PageTransitionType.fade, child: LoginPage()));
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        _showSuccessSnackbar(e.toString());
-        errorMessage = e.message;
-      });
-    }
+  @override
+  void initState() {
+    _fetchAccepted();
+    _fetchCancelled();
+    _fetchPending();
+    _fetchStations();
+    super.initState();
   }
 
-  // addStation() {
-  //   return showDialog(
-  //     //barrierDismissible: false,
-  //       context: context,
-  //       builder: (parm) {
-  //         return Material(
-  //             child: Center(
-  //               child: Container(
-  //             color: Colors.transparent,
-  //             child: Container(
-  //               decoration: BoxDecoration(
-  //                   color: Colors.white,
-  //                   borderRadius: BorderRadius.circular(8),
-  //                   boxShadow: const [
-  //                     BoxShadow(
-  //                         color: Colors.grey,
-  //                         offset: Offset(0, 3),
-  //                         blurRadius: 24)
-  //                   ]),
-  //               height: 650,
-  //               width: 400,
-  //               child:
-  //               //dieselLoaded & petrolLoaded & idLoaded ?
-  //               Padding(
-  //                 padding: const EdgeInsets.symmetric(horizontal: 10),
-  //                 child: Column(
-  //                   mainAxisAlignment: MainAxisAlignment.center,
-  //                   children: [
-  //                     Text(
-  //                       "Add Station",
-  //                       style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-  //                     ),
-  //                     SizedBox(
-  //                       height: 20,
-  //                     ),
-  //                     Padding(
-  //                       padding: const EdgeInsets.symmetric(horizontal: 30),
-  //                       child: TextField(
-  //                         //enabled: quota ? true : false,
-  //                         controller: _stationNameController,
-  //                           decoration: InputDecoration(
-  //                             prefixIcon: Icon(Icons.local_gas_station),
-  //                             filled: true,
-  //                             fillColor: Colors.grey[200],
-  //                             //isDense: true,
-  //                             labelText: 'station name',
-  //                             border: InputBorder.none,
-  //                             errorText: _validateStName ? 'Station Name Can\'t Be Empty' : null,
-  //                           )),
-  //                     ),
-  //                     SizedBox(
-  //                       height: 20,
-  //                     ),
-  //                     Padding(
-  //                       padding: const EdgeInsets.symmetric(horizontal: 30),
-  //                       child: TextField(
-  //                         //enabled: quota ? true : false,
-  //                         controller: _stationIDController,
-  //                           decoration: InputDecoration(
-  //                             prefixIcon: Icon(Icons.local_gas_station),
-  //                             filled: true,
-  //                             fillColor: Colors.grey[200],
-  //                             //isDense: true,
-  //                             labelText: 'station ID',
-  //                             border: InputBorder.none,
-  //                             errorText: _validateSId ? 'Station ID Can\'t Be Empty' : null,
-  //                           )),
-  //                     ),
-  //                     SizedBox(
-  //                       height: 20,
-  //                     ),
-  //                     Padding(
-  //                       padding: const EdgeInsets.symmetric(horizontal: 30),
-  //                       child: TextField(
-  //                         //enabled: quota ? true : false,
-  //                         controller: _usernameController,
-  //                           decoration: InputDecoration(
-  //                             prefixIcon: Icon(Icons.person_outline),
-  //                             filled: true,
-  //                             fillColor: Colors.grey[200],
-  //                             //isDense: true,
-  //                             labelText: 'username',
-  //                             border: InputBorder.none,
-  //                             errorText: _validateUN ? 'Username Can\'t Be Empty' : null,
-  //                           )),
-  //                     ),
-  //                     SizedBox(
-  //                       height: 20,
-  //                     ),
-  //                     Padding(
-  //                       padding: const EdgeInsets.symmetric(horizontal: 30),
-  //                       child: TextField(
-  //                         //enabled: quota ? true : false,
-  //                         controller: _emailController,
-  //                           decoration: InputDecoration(
-  //                             prefixIcon: Icon(Icons.mail_outline),
-  //                             filled: true,
-  //                             fillColor: Colors.grey[200],
-  //                             //isDense: true,
-  //                             labelText: 'email',
-  //                             border: InputBorder.none,
-  //                             errorText: _validateEmail ? 'Email Can\'t Be Empty' : null,
-  //                           )),
-  //                     ),
-  //                     SizedBox(
-  //                       height: 20,
-  //                     ),
-  //                     Padding(
-  //                       padding: const EdgeInsets.symmetric(horizontal: 30),
-  //                       child: TextField(
-  //                         obscureText: true,
-  //                         controller: _passwordController,
-  //                         decoration: InputDecoration(
-  //                           prefixIcon: Icon(Icons.lock_open),
-  //                           filled: true,
-  //                           fillColor: Colors.grey[200],
-  //                           //isDense: true,
-  //                           labelText: 'password',
-  //                           border: InputBorder.none,
-  //                           errorText: _validatePW ? 'Password Can\'t Be Empty' : null,
-  //                         ),
-  //                       ),
-  //                     ),
-  //                     SizedBox(
-  //                       height: 20,
-  //                     ),
-  //                     Padding(
-  //                       padding: const EdgeInsets.symmetric(horizontal: 20),
-  //                       child: SizedBox(
-  //                         height: 40,
-  //                         width: MediaQuery.of(context).size.width,
-  //                         child: TextButton(
-  //                             style: TextButton.styleFrom(
-  //                                 foregroundColor: Colors.white,
-  //                                 backgroundColor: Colors.red[700],
-  //                                 textStyle: const TextStyle(fontSize: 15)),
-  //                             onPressed: () {
-  //                               setState(() {
-  //                                 _emailController.text.isEmpty
-  //                                     ? _validateEmail = true
-  //                                     : _validateEmail = false;
-  //                                 _passwordController.text.isEmpty
-  //                                     ? _validatePW = true
-  //                                     : _validatePW = false;
-  //                                 _usernameController.text.isEmpty
-  //                                     ? _validateUN = true
-  //                                     : _validateUN = false;
-  //                                 _stationIDController.text.isEmpty
-  //                                     ? _validateSId = true
-  //                                     : _validateSId = false;
-  //                                 _stationIDController.text.isEmpty
-  //                                     ? _validateStName = true
-  //                                     : _validateStName = false;
-  //                               });
-  //                               if (_validatePW == false &&
-  //                                   _validateEmail == false &&
-  //                                   _validateSId == false &&
-  //                                   _validateUN == false &&
-  //                                   _validateStName == false) {
-  //                                 createUserWithEmailAndPassword();
-  //                               }
-  //                             },
-  //                             child: const Text('Save')),
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               )
-  //               //: const Center(child: CircularProgressIndicator())
-  //               ,
-  //             ),
-  //           ),
-  //         ));
-  //       });
-  // }
-
-  //setting the expansion function for the navigation rail
   int _selectedIndex = 0;
   bool isExpanded = false;
   @override
@@ -393,7 +245,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
                                         width: 15.0,
                                       ),
                                       Text(
-                                        "Total Fuel station",
+                                        "Total Fuel stations",
                                         style: TextStyle(
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold,
@@ -401,7 +253,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
                                       )
                                     ],),
                                       SizedBox(height: 20.0,),
-                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                                      Text("$stations", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
                                     ],
                                   ),
                                 ))
@@ -427,7 +279,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
                                       )
                                     ],),
                                       SizedBox(height: 20.0,),
-                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                                      Text("$pending", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
                                     ],
                                   ),
                                 ))
@@ -453,7 +305,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
                                       )
                                     ],),
                                       SizedBox(height: 20.0,),
-                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                                      Text("$accepted", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
                                     ],
                                   ),
                                 ))
@@ -479,7 +331,7 @@ class _PFDashboardScreenState extends State<PFDashboardScreen> {
                                       )
                                     ],),
                                       SizedBox(height: 20.0,),
-                                      Text("View Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                                      Text("$cancelled", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
                                     ],
                                   ),
                                 ))
