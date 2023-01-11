@@ -22,7 +22,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   sendRequest() {
     return showDialog(
-        barrierDismissible: false,
+        //barrierDismissible: false,
         context: context,
         builder: (parm) {
           return Center(

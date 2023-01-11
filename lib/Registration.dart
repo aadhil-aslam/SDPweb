@@ -250,7 +250,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               _stationIDController.text.isEmpty
                                   ? _validateSId = true
                                   : _validateSId = false;
-                              _stationIDController.text.isEmpty
+                              _stationNameController.text.isEmpty
                                   ? _validateStName = true
                                   : _validateStName = false;
 
