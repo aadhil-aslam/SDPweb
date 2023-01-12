@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:web/Home.dart';
 import 'package:web/station_screens/request_action.dart';
 import '../Login.dart';
 import 'OrderStatus.dart';
@@ -349,7 +350,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Navigator.push(
                         context,
                         PageTransition(
-                            type: PageTransitionType.fade, child: LoginPage()));
+                            type: PageTransitionType.fade, child: MyHomePage()));
                   },
                   child: const Text(
                     'Logout',
