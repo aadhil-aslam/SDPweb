@@ -422,7 +422,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   //setting the expansion function for the navigation rail
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
   bool isExpanded = true;
   @override
   Widget build(BuildContext context) {
