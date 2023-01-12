@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:web/station_screens/request_action.dart';
-
 import '../Login.dart';
 import 'OrderStatus.dart';
 import 'Requests.dart';
@@ -512,17 +511,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       label: Text("Customer requests"),
                     ),
-                    NavigationRailDestination(
-                      icon: Icon(
-                        Icons.person,
-                        color: Colors.white54,
-                      ),
-                      selectedIcon: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                      ),
-                      label: Text("Profile"),
-                    ),
+                    // NavigationRailDestination(
+                    //   icon: Icon(
+                    //     Icons.person,
+                    //     color: Colors.white54,
+                    //   ),
+                    //   selectedIcon: Icon(
+                    //     Icons.person,
+                    //     color: Colors.white,
+                    //   ),
+                    //   label: Text("Profile"),
+                    // ),
                     // NavigationRailDestination(
                     //   icon: Icon(
                     //     Icons.settings,
@@ -893,8 +892,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ? OrderStatus()
                   : _selectedIndex == 2
                       ? Requests()
-                      : _selectedIndex == 3
-                          ? RequestAction()
+                      // : _selectedIndex == 3
+                      //     ? RequestAction()
                           : SizedBox.shrink(),
         ],
       ),
