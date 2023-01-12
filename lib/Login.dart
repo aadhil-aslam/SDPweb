@@ -191,31 +191,31 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 30,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Do not have an account? ",
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
-                        ),
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.fade,
-                                      child: RegistrationPage()));
-                            },
-                            child: Text("Sign up here. ",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.indigo,
-                                ))),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 20),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       Text(
+                  //         "Do not have an account? ",
+                  //         style: TextStyle(fontSize: 14, color: Colors.grey),
+                  //       ),
+                  //       GestureDetector(
+                  //           onTap: () {
+                  //             Navigator.push(
+                  //                 context,
+                  //                 PageTransition(
+                  //                     type: PageTransitionType.fade,
+                  //                     child: RegistrationPage()));
+                  //           },
+                  //           child: Text("Sign up here. ",
+                  //               style: TextStyle(
+                  //                 fontSize: 14,
+                  //                 color: Colors.indigo,
+                  //               ))),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(
                     height: 10,
                   ),
